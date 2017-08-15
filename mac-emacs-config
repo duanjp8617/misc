@@ -1,0 +1,28 @@
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; turn on auto-fill when editing latex
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'tex-mode-hook 'turn-on-auto-fill)
+(setq-default fill-column 80)
+
+;; show mathching parences
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+
+;; load tuareg mode
+(load "/Users/dj8617/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
+
+;; load merlin
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+ (when (and opam-share (file-directory-p opam-share))
+  (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+  (autoload 'merlin-mode "merlin" nil t nil)
+  (add-hook 'tuareg-mode-hook 'merlin-mode t)))
+
+;; load ocp-indent
+(load "/Users/dj8617/.opam/4.03.0/share/emacs/site-lisp/ocp-indent")
