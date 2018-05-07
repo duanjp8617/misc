@@ -1,0 +1,54 @@
+
+;; set up the vim mode, emacs original mode is killing me though...
+;;(require 'evil)
+;;(evil-mode 1)
+
+;; load proof general for coq
+(load "/Users/dj8617/spacemacs/.emacs.d/lisp/PG/generic/proof-site")
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; show mathching parences
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+
+;; First install rustc on the computer folllowing the instructions.
+;; Before we start configuring rust on emacs, let's first install some packages.
+;; 1. rust-mode (with M-x package-install rust-mode)
+;; 2. cargo
+;; 3. racer (Please use "cargo install racer" to install the racer package first)
+;; 4(*Alternative*). (Use "cargo install rustfmt" to install rustfmt for formatting the current emacs
+;;                    buffers, but currently it doesn't work on my mac)
+
+;; Automatically added after installing rust-mode and cargo packages, please remove these before installing
+;; rust-mode and cargo
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flycheck-rust racer company cargo rust-mode ghc evil))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Configure cargo with rust-mode
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
+
+;; Set Racer, the code completion and source code navigation tool for Rust
+(setq racer-cmd "~/.cargo/bin/racer") ;; Rustup binaries PATH
+(setq racer-rust-src-path "/Users/dj8617/WorkSpace/Code/rust/src") ;; Rust source code PATH, please download rust code from github first
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+
+
