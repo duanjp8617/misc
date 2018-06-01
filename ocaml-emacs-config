@@ -1,0 +1,38 @@
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+;; scroll one line at a time (less "jumpy" than defaults)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; show mathching parences
+(show-paren-mode 1)
+(setq show-paren-delay 0)
+
+;; Some tips for configuring opam:
+;; Use opam switch to select a proper ocaml version
+;; After changing to a new ocaml version, it seems that all the packages need to be installed.
+
+;; Configure tuareg
+;; 1. opam install tuareg
+;; 2. When tuareg finishes installation, it tells you how to configure emacs
+(load "/Users/dj8617/.opam/4.06.1/share/emacs/site-lisp/tuareg-site-file")
+
+;; Configure merlin
+;; 1. opam install merlin
+;; 2. When merlin finishes installation, it tells you how to configure emacs
+(let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+  (when (and opam-share (file-directory-p opam-share))
+    ;; Register Merlin
+    (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))
+    (autoload 'merlin-mode "merlin" nil t nil)
+    ;; Automatically start it in OCaml buffers
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    ;; Use opam switch to lookup ocamlmerlin binary
+    (setq merlin-command 'opam)))
