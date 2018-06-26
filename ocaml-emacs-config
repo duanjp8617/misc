@@ -4,6 +4,27 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+;; Set the environment variable for properly running ocamlc and ocaml toplevel
+;; If you call "opam switch" from shell, you may somtimes see this
+;; "[WARNING] The environment is not in sync with the current switch.
+;;            You should run: eval `opam config env`"
+;; In this case, I think the environment for using ocaml is not properly set.
+;; In order to know what kind of envrionment variable you should use, you
+;; can you the following command sequence.
+;; env > pre
+;; eval `opam config env`
+;; env > post
+;; diff -U 0 pre post
+;; Then you should add all the displayed environment variables down below.
+;; In this way, once you have openned shell you automatically get access to
+;; all the ocaml binaries.
+(setenv "CAML_LD_LIBRARY_PATH" "/Users/dj8617/.opam/4.03.0/lib/stublibs")
+(setenv "MANPATH" "/Users/dj8617/.opam/4.03.0/man:")
+(setenv "PERL5LIB" "/Users/dj8617/.opam/4.03.0/lib/perl5")
+(setenv "OCAML_TOPLEVEL_PATH" "/Users/dj8617/.opam/4.03.0/lib/toplevel")
+(setenv "OPAMUTF8MSGS" "1")
+(setenv "PATH" (concat "/Users/dj8617/.opam/4.03.0/bin:" (getenv "PATH")))
+
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -21,7 +42,7 @@
 ;; Configure tuareg
 ;; 1. opam install tuareg
 ;; 2. When tuareg finishes installation, it tells you how to configure emacs
-(load "/Users/dj8617/.opam/4.06.1/share/emacs/site-lisp/tuareg-site-file")
+(load "/Users/dj8617/.opam/4.03.0/share/emacs/site-lisp/tuareg-site-file")
 
 ;; Configure merlin
 ;; 1. opam install merlin
@@ -36,3 +57,12 @@
     (add-hook 'caml-mode-hook 'merlin-mode t)
     ;; Use opam switch to lookup ocamlmerlin binary
     (setq merlin-command 'opam)))
+
+;; Setup the execution path?
+(setq exec-path (append exec-path (list "/Users/dj8617/.opam/4.03.0/bin")))
+
+;; Disable electric-indent-mode
+;;(when (fboundp 'electric-indent-mode) (electric-indent-mode -1))
+
+;; Set up a directory for storing backup files
+(setq backup-directory-alist '(("" . "~/.emacs.d/emacs-backup")))
