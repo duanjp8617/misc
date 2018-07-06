@@ -1,0 +1,44 @@
+1. sudo apt-get install shadowsocks
+
+2. Setup a configuration file called "shadowsocks.json"
+
+3. Fush shadowsocks.json with the following contents
+{
+    "server":"服务器的ip",
+    "server_port":服务器的端口,
+    "local_address":"127.0.0.1",
+    "local_port":1080,
+    "password":"密码",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open":false
+}
+
+4. sslocal -c shadowsocks.json
+
+5. Install polipo: sudo apt-get install polipo
+
+6. Populate "/etc/polipo/config" with the following content
+    
+    # This file only needs to list configuration variables that deviate
+    # from the default values. See /usr/share/doc/polipo/examples/config.sample
+    # and "polipo -v" for variables you can tweak and further information.
+    logSyslog = false
+    logFile = "/var/log/polipo/polipo.log"
+
+    socksParentProxy = "127.0.0.1:1080"
+    socksProxyType = socks5
+
+    chunkHighMark = 50331648
+    objectHighMark = 16384
+
+    serverMaxSlots = 64
+    serverSlots = 16
+    serverSlots1 = 32
+
+    proxyAddress = "0.0.0.0"
+    proxyPort = 8123
+    
+ 7. Restart polipo with "/etc/init.d/polipo restart"
+ 
+ 8. In firefox browser, setup the HTTP proxy as 127.0.0.1:8123. Remember to tick "Use this proxy server for all protocols" 
