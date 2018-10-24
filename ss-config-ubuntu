@@ -1,4 +1,7 @@
-1. sudo apt-get install shadowsocks
+1. sudo apt-get install libsodium-dev
+   sudo apt-get install python3-pip
+   pip3 install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+
 
 2. Setup a configuration file called "shadowsocks.json"
 
@@ -14,7 +17,7 @@
     "fast_open":false
 }
 
-4. sslocal -c shadowsocks.json
+4. $HOME/.local/bin/sslocal -c $HOME/SSConfig/shadowsocks.json
 
 5. Install polipo: sudo apt-get install polipo
 
