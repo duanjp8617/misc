@@ -1,0 +1,88 @@
+1. Install the latex workshop extention for vscode.
+2. Copy the following text to settings.json. This file sets a ruler of 80. Change the default pdf viewer of vscode to tab. 
+   set up five recipes. Enable latex chk. Disable build on save.
+
+{
+    "editor.rulers": [80],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.tools": [
+	    {
+	        "name": "xelatex",
+	        "command": "xelatex",
+	        "args": [
+	          "-synctex=1",
+	          "-interaction=nonstopmode",
+            "-file-line-error",
+            "-pdf",
+	          "%DOC%"
+        	]
+        },
+		{
+	        "name": "pdflatex",
+	        "command": "pdflatex",
+	        "args": [
+	          "-synctex=1",
+	          "-interaction=nonstopmode",
+	          "-file-line-error",
+	          "%DOC%"
+	        ]
+	    },
+	    {
+	        "name": "bibtex",
+	        "command": "bibtex",
+	        "args": [
+	          "%DOCFILE%"
+	    	]
+	    }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+          "name": "pdflatex -> bibtex -> pdflatex*2",
+          "tools": [
+            "pdflatex",
+            "bibtex",
+            "pdflatex",
+            "pdflatex"
+          ]
+        },
+        {
+          "name": "xelatex -> bibtex -> xelatex*2",
+          "tools": [
+            "xelatex",
+            "bibtex",
+            "xelatex",
+            "xelatex"
+          ]
+        },
+        {
+          "name": "PDFLaTeX",
+          "tools": [
+            "pdflatex"
+          ]
+      	},
+        {
+          "name": "XeLaTeX",
+          "tools": [
+            "xelatex"
+          ]
+        },
+        {
+          "name": "latexmk",
+          "tools": [
+            "latexmk"
+          ]
+        },
+        {
+          "name": "BibTeX",
+          "tools": [
+            "bibtex"
+          ]
+        },
+    ],
+    "latex-workshop.chktex.enabled": true,
+    "latex-workshop.latex.autoBuild.onSave.enabled": false,
+}
+
+3. Work on the latex file. Hit ctrl+alt+b for building the latex source file.
