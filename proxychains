@@ -1,0 +1,5 @@
+1. proxychains can be used in conjection with a regular command to enable the command to acess the Internet vis SS.
+2. Install proxychains.
+3. Configure the /etc/proxychains4.conf file.
+4. set and only set "socks5 127.0.0.1 1080"
+5. Use "proxychains4 cmd" to launch the command.
