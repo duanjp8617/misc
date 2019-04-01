@@ -6,3 +6,6 @@
 
 6. If proxychain4 is not working (we can check this by "proxychains4 curl https://www.google.com"), stop polipo
    with "sudo /etc/init.d/polipo stop", and then restart polipo with "sudo /etc/init.d/polipo restart"
+   
+7. We must first turn off the proxy from Ubuntu setting, then we can create a terminal and use proxychains4 in that terminal.
+   Otherwise proxychains4 can't work correctly.
