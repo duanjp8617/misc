@@ -3,3 +3,6 @@
 3. Configure the /etc/proxychains4.conf file.
 4. set and only set "socks5 127.0.0.1 1080"
 5. Use "proxychains4 cmd" to launch the command.
+
+6. If proxychain4 is not working (we can check this by "proxychains4 curl https://www.google.com"), stop polipo
+   with "sudo /etc/init.d/polipo stop", and then restart polipo with "sudo /etc/init.d/polipo restart"
