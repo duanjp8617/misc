@@ -2,3 +2,6 @@
 2. Install the rust vscode extension for vscode.
 3. (proxychains4) rls
 4. launch vscode.
+
+
+* Open vscode from command line with the code command may save us from the eternal spinning of the rust start symbol.
