@@ -1,0 +1,53 @@
+This file contains instructions for building a basic Ubuntu cloud VM image, tested on Ubuntu 18.04 LTS
+
+1.  Create a cloud-config file with the following contents (the username to log into the VM is always ubuntu, the password is the configured password):
+
+#cloud-config
+preserve_hostname: False
+hostname: xx
+password: xx
+chpasswd: { expire: False }
+ssh_pwauth: True
+
+2. Run the following command to create a cloud-config.img CDROM to initialize the VM (need cloud-image-utils package):
+
+cloud-localds cloud-config.img cloud-config
+
+3. Download a ubuntu cloud image from https://mirrors.ustc.edu.cn/ubuntu-cloud-images/server/server/server/daily/server/bionic/20190731/bionic-server-cloudimg-amd64.img, rename the image as cloud-vm.img and resize the image using the following command:
+
+qemu-img resize cloud-vm.img +10G 
+
+4. Run the following command to create a new VM (need virt-install, will enter an interactive session for the initial bootup, use Ctrl+Shift+] to escape):
+
+virt-install --connect=qemu:///system \
+ --name cloud-vm \
+ --ram 2048 \
+ --vcpus=2 \
+ --os-type=linux \
+ --disk cloud-vm.img,size=20,device=disk,bus=virtio \
+ --disk cloud-config.img,device=cdrom \
+ --graphics none \
+ --import
+
+5. Remove the file in /etc/netplan, add a new file called **01-netcfg.yaml** with the following content
+
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      dhcp4: yes
+
+6. Run the command to apply the netplan: 
+
+sudo netplan apply
+
+7. Disable cloud-init using the following command: 
+
+sudo touch /etc/cloud/cloud-init.disabled
+
+6. eject the initialization image of cloud init from the VM
+
+ virsh change-media cloud-vm hda --eject --config

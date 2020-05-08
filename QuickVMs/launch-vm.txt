@@ -1,0 +1,19 @@
+This file contains instructions for quickly launch new VMs based on the pre-built Ubuntu cloud image.
+
+1.
+Copy the cloud image to a new file
+
+2. 
+
+sudo virt-install \
+     --import \
+     --noreboot \
+     --name vm01 \
+     --vcpus 2 \
+     --memory 2048 \
+     --disk path=/home/djp/WorkSpace/CloudImgs/vm01.img,format=qcow2,bus=virtio \
+     --accelerate \
+     --network=network:default,model=virtio \
+     --serial pty \
+     --cpu host \
+     --rng=/dev/random
