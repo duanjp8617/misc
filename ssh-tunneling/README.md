@@ -80,3 +80,28 @@ ssh -p RemotePort restrictedServerUser@localhost
 ```
 
 ## Create a local SSH tunnel from my own PC.
+1.
+Run the following command on my own PC:
+
+```console
+ssh -L <RemotePort>:<LocalHost>:<LocalPort> sshUser@remoteServer
+```
+RemotePort : The port occupied by the cloud server, which can be used to tunnel the traffic to the restricted server.
+
+LocalHost : This is usually localhost or "127.0.0.1", which indicates the local address of my PC.
+
+LocalPort : The port occupied by my PC for tunneling the traffic to the restricted server.
+
+sshUser : The ssh user name of the cloud server.
+
+remoteServer : The public address of the remote server.
+2.
+Open another terminal, and issue the following command:
+
+```console
+ssh -p <LocalPort> restrictedServerUser@localhost
+```
+
+LocalPort : The LocalPort parameter from the previous step.
+
+restrictedServerUser : An user account on the restricted server.
