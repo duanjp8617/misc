@@ -32,7 +32,7 @@ sudo virt-install \
      --memory $sizeMem \
      --disk path=$destImgDir$1,format=qcow2,bus=virtio \
      --accelerate \
-     --network=network:default,model=virtio,mac=52:54:00:00:00:250 \
+     --network=network:default,model=virtio,mac=52:54:00:00:00:25 \
      --serial pty \
      --cpu host \
      --rng=/dev/random
