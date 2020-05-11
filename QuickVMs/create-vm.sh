@@ -23,6 +23,7 @@ else
 fi
 
 # Create the VM.
+# To specify the mac address, add mac=52:54:00:XX:YY:ZZ after --network=
 sudo virt-install \
      --import \
      --noreboot \
@@ -31,7 +32,7 @@ sudo virt-install \
      --memory $sizeMem \
      --disk path=$destImgDir$1,format=qcow2,bus=virtio \
      --accelerate \
-     --network=network:default,model=virtio \
+     --network=network:default,model=virtio,mac=52:54:00:00:00:250 \
      --serial pty \
      --cpu host \
      --rng=/dev/random
