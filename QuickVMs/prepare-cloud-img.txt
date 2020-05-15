@@ -30,6 +30,8 @@ virt-install --connect=qemu:///system \
  --import
 
 5. Remove the file in /etc/netplan, add a new file called **01-netcfg.yaml** with the following content
+Note that the trailing number of each interface name actually represent the PCI slot number
+assigned to each interface when defining the VM with libvirt.
 
 # This file describes the network interfaces available on your system
 # For more information, see netplan(5).
@@ -37,7 +39,11 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    ens3:
+    ens10:
+      dhcp4: yes
+    ens11:
+      dhcp4: yes
+    ens12:
       dhcp4: yes
 
 6. Run the command to apply the netplan: 
