@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<!-- saved from url=(0094)https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/ -->
+<html lang="en-US" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+		<script type="text/javascript" async="" src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/analytics.js"></script><script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>KVM: Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee : Software Architect</title>
+<link rel="dns-prefetch" href="https://www.googletagmanager.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link href="https://fonts.gstatic.com/" crossorigin="" rel="preconnect">
+<link rel="alternate" type="application/rss+xml" title="Fabian Lee : Software Architect » Feed" href="https://fabianlee.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="Fabian Lee : Software Architect » Comments Feed" href="https://fabianlee.org/comments/feed/">
+<link rel="stylesheet" id="wp-block-library-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/style.min.css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/theme.min.css" media="all">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/wp-syntax.css" media="all">
+<link rel="stylesheet" id="twentysixteen-fonts-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/css" media="all">
+<link rel="stylesheet" id="genericons-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/genericons.css" media="all">
+<link rel="stylesheet" id="twentysixteen-style-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/style.css" media="all">
+<link rel="stylesheet" id="twentysixteen-block-style-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/blocks.css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie.css?ver=20170530' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie8.css?ver=20170530' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='https://fabianlee.org/wp-content/themes/twentysixteen/css/ie7.css?ver=20170530' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="enlighterjs-css" href="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/enlighterjs.min.css" media="all">
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/jquery.js"></script>
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/jquery-migrate.min.js"></script>
+<!--[if lt IE 9]>
+<script src='https://fabianlee.org/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/js" async=""></script>
+<script>
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-80909344-1', {"anonymize_ip":true} );
+</script>
+<link rel="https://api.w.org/" href="https://fabianlee.org/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://fabianlee.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://fabianlee.org/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Git: BFG for removing secrets from entire git history" href="https://fabianlee.org/2019/03/24/git-bfg-for-removing-secrets-from-entire-git-history/">
+<link rel="next" title="KVM: Creating a guest VM on a NAT network" href="https://fabianlee.org/2019/05/26/kvm-creating-a-guest-vm-on-a-nat-network/">
+<meta name="generator" content="WordPress 5.4.1">
+<link rel="canonical" href="https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/">
+<link rel="shortlink" href="https://fabianlee.org/?p=1492">
+<meta name="generator" content="Site Kit by Google 1.8.1"></head>
+
+<body data-rsssl="1" class="post-template-default single single-post postid-1492 single-format-standard wp-custom-logo wp-embed-responsive">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					<a href="https://fabianlee.org/" class="custom-logo-link" rel="home"><img width="46" height="46" src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/headshot.png" class="custom-logo" alt="Fabian Lee : Software Architect"></a>
+											<p class="site-title"><a href="https://fabianlee.org/" rel="home">Fabian Lee : Software Architect</a></p>
+												<p class="site-description">Cloud Operations and Development</p>
+									</div><!-- .site-branding -->
+
+									<button id="menu-toggle" class="menu-toggle">Menu</button>
+
+					<div id="site-header-menu" class="site-header-menu">
+													<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Primary Menu">
+								<div class="menu-categories-container"><ul id="menu-categories" class="primary-menu"><li id="menu-item-897" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-897"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a></li>
+<li id="menu-item-896" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-896"><a href="https://fabianlee.org/category/logging/">Logging</a></li>
+<li id="menu-item-936" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-936"><a href="https://fabianlee.org/category/containers/">Containers</a></li>
+<li id="menu-item-1156" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1156"><a href="https://fabianlee.org/category/python/">Python</a></li>
+</ul></div>							</nav><!-- .main-navigation -->
+						
+											</div><!-- .site-header-menu -->
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-1492" class="post-1492 post type-post status-publish format-standard hentry category-linux category-virtualization tag-br0 tag-brctl tag-bridge tag-host tag-kvm tag-libvirt tag-netplan tag-networking tag-virtual">
+	<header class="entry-header">
+		<h1 class="entry-title">KVM: Creating a bridged network with NetPlan on Ubuntu bionic</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		<p><img class="size-full wp-image-1252 alignleft" src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/kvmbanner-logo3.png" alt="" width="200" height="62">In order to expose <a href="https://www.linux-kvm.org/page/Main_Page">KVM</a> virtual machines on the same network as your Host, you need to enable bridged networking.</p>
+<p>In this article, I’ll show how to implement KVM bridged networking on Ubuntu bionic using <a href="https://netplan.io/">Netplan</a>.&nbsp; This bridged network will expose the KVM Guest OS as a peer on the upstream network, with no limits on ingress/egress.</p>
+<p><span id="more-1492"></span></p>
+<h3>Prerequisites</h3>
+<p>If you haven’t <a href="https://fabianlee.org/2018/08/27/kvm-bare-metal-virtualization-on-ubuntu-with-kvm/">installed KVM on Ubuntu, you can follow the instructions in my article here</a>.</p>
+<p>Although we don’t directly require it for NetPlan, install the network bridge utilities package for debugging.</p>
+<pre>sudo apt-get install bridge-utils -y</pre>
+<h3>Create host bridge using NetPlan</h3>
+<p>By creating a bridged network, you can have guest VMs share the network connection of the Host machine.</p>
+<p>As an operator, this means you need to use the tools provided at the OS level to create a network bridge.&nbsp; On older versions of Ubuntu, you would use ‘<a href="https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html">brctl</a>‘, but on bionic you use Netplan.</p>
+<h6>Look at existing NetPlan</h6>
+<p>Go into the “/etc/netplan” directory and you should see a file named “01-netcfg.yaml” or “50-cloud-init.yml” that looks something like:</p>
+<pre>network:
+  version: 2
+  renderer: networkd
+
+  ethernets:
+    enp1s0:
+      dhcp4: true
+      dhcp6: false 
+      addresses: [192.168.1.239/24]
+      gateway4: 192.168.1.1
+      mtu: 1500
+      nameservers:
+        addresses: [8.8.8.8]
+</pre>
+<p>This is for a host with a single physical NIC, static IP of 192.168.1.239 on the 192.168.1.1 network and using Google DNS servers at 8.8.8.8.</p>
+<h6>Created a bridge with Netplan</h6>
+<p>To create a bridged network, you need to disable the specific settings on the physical network, and instead apply them to the bridge.&nbsp; Make a backup of your old file before modifying.</p>
+<pre>cd /etc/netplan
+
+# make backup
+sudo cp 50-cloud-init.yaml 50-cloud-init.yaml.orig
+
+# modify, add bridge
+sudo vi 50-cloud-init.yaml</pre>
+<p>Below is an example showing how we take the physical network example above, and created a bridge named ‘br0’ that has the same properties.</p>
+<pre>network:
+  version: 2
+  renderer: networkd
+
+  ethernets:
+    enp1s0:
+      dhcp4: false 
+      dhcp6: false 
+      #addresses: [192.168.1.239/24]
+      #gateway4: 192.168.1.1
+      #mtu: 1500
+      #nameservers:
+      #  addresses: [8.8.8.8]
+
+  bridges:
+    br0:
+      interfaces: [enp1s0]
+      addresses: [192.168.1.239/24]
+      gateway4: 192.168.2.1
+      mtu: 1500
+      nameservers:
+        addresses: [8.8.8.8]
+      parameters:
+        stp: true
+        forward-delay: 4
+      dhcp4: no
+      dhcp6: no
+
+</pre>
+<p>Then apply the new netplan with bridged network with the commands below.&nbsp; But be sure you have physical access to the host in case network connectivity needs to be investigated.</p>
+<pre>sudo netplan generate 
+sudo netplan --debug apply</pre>
+<p>You may temporarily lost network connectivity if you are connected over ssh after running the apply command.</p>
+<p>You can see the network entities at the OS level by using these commands:</p>
+<pre># bridge control
+brctl show
+
+# network control
+networkctl
+networkctl status br0
+
+# ip list
+ip a | grep " br0:" -A 3
+# show host routes
+ip route
+
+# show arp table (IP to MAC)
+arp -n</pre>
+<h3>Configure libvirt network to use existing bridge</h3>
+<p>Now with the network bridge created at the OS level, you can configure a libvirt network to <a href="https://libvirt.org/formatnetwork.html#examplesBridge">use this bridge</a>.&nbsp; Create a file named “host-bridge.xml” containing the following:</p>
+<pre>&lt;network&gt;
+  &lt;name&gt;host-bridge&lt;/name&gt;
+  &lt;forward mode="bridge"/&gt;
+  &lt;bridge name="br0"/&gt;
+&lt;/network&gt;</pre>
+<p>Then create the network using these commands:</p>
+<pre># create libvirt network using existing host bridge
+virsh net-define host-bridge.xml
+virsh net-start host-bridge
+virsh net-autostart host-bridge
+
+# state should be active, autostart, and persistent
+virsh net-list --all</pre>
+<p>VM assigned to this network will be treated just like any other peer host.&nbsp; For example, if your upstream gateway router is DHCP enabled, new VM will be assigned an IP from that pool if the guest OS is configured to use DHCP.&nbsp; Likewise, the guest OS can be configured to use a static IP from the same subnet as the host bridge.</p>
+<h3>KVM Guest OS</h3>
+<p>The last step is to configure a KVM Guest to use this network bridge.</p>
+<p><img class=" wp-image-1522 aligncenter" src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/kvm-nic-host-bridge.png" alt="" width="492" height="155" srcset="https://fabianlee.org/wp-content/uploads/2019/04/kvm-nic-host-bridge.png 675w, https://fabianlee.org/wp-content/uploads/2019/04/kvm-nic-host-bridge-300x95.png 300w" sizes="(max-width: 492px) 85vw, 492px"></p>
+<p>From virt-manager, select the network source ‘Virtual network host-bridge: Bridge network’ as shown above.&nbsp; Or if you ‘virsh edit’ the KVM guest, then set the &lt;interface type=’network’&gt; and &lt;source network=’host-bridge’/&gt; using similar values to below.</p>
+<pre>&lt;interface type='network'&gt;
+    &lt;source network='host-bridge'/&gt;
+    &lt;model type='virtio'/&gt;
+    &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/&gt;
+&lt;/interface&gt;</pre>
+<p>Note that this only assigns the interface at the firmware level.&nbsp; You still have to ensure proper configuration at the operating system level in order to use DHCP or static IP.</p>
+<p>Read <a href="https://fabianlee.org/2018/09/17/kvm-cloning-and-fixing-ubuntu-host-using-kvm/">my article on cloning Ubuntu guest VMs</a> for tips, configuring older Ubuntu versions is well understood at this point but newer Ubuntu versions that use systemd for networking do not use the MAC address as the DHCP id which can lead to issues when cloning.</p>
+<p>&nbsp;</p>
+<p>REFERENCES</p>
+<p><a href="https://libvirt.org/formatnetwork.html">libvirt docs, Use an existing host bridge</a></p>
+<p><a href="https://amoldighe.github.io/2017/12/20/kvm-networking/">KVM networking, creating NAT and host-only networks using virsh</a></p>
+<p><a href="https://amoldighe.github.io/2017/12/30/kvm-bridge-networking/">KVM networking, bridged</a></p>
+<p><a href="https://wiki.libvirt.org/page/VirtualNetworking">libvirt wiki, VirtualNetworking docs</a></p>
+<p><a href="https://askubuntu.com/questions/1054350/netplan-bridge-for-kvm-on-ubuntu-server-18-04-with-static-ips?rq=1">StackExchange, create libvirt network from bridged network defined in netplan</a></p>
+<p><a href="https://www.linuxtechi.com/install-configure-kvm-ubuntu-18-04-server/">Bridged networking on KVM, Ubuntu bionic</a></p>
+<p><a href="https://netplan.io/reference">Netplan reference, with explanation of params for bridging (stp, forward-delay)</a></p>
+<p><a href="https://www.ibm.com/support/knowledgecenter/en/linuxonibm/liaag/wkvm/wkvm_c_net_nat.htm">Create private bridged network using virsh net-create</a></p>
+<p><a href="https://www.cyberciti.biz/faq/linux-kvm-libvirt-dnsmasq-dhcp-static-ip-address-configuration-for-guest-os/">NAT bridge with DCHP and also set of static IP</a></p>
+<p><a href="https://libvirt.org/formatnetwork.html">libvirt xml definition for network section</a></p>
+<p><a href="https://libvirt.org/formatnetwork.html">libvirt, use nat, routed, isolated, pre-existing host bridge, macvtap</a></p>
+<p><a href="https://jamielinux.com/docs/libvirt-networking-handbook/appendix/dhcp-host-entries.html">jamielinux, define dhcp bridge with static IP</a></p>
+<p><a href="https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html">jamielinux, bridged network for public IP</a></p>
+<p><a href="https://www.linuxtechi.com/install-configure-kvm-ubuntu-18-04-server/">linuxtechi, Linux bridge for KVM on Bionic</a></p>
+<p><a href="https://www.thegeekstuff.com/2017/06/brctl-bridge/">thegeekstuff, brctl commands</a></p>
+<p><a href="https://jamielinux.com/docs/libvirt-networking-handbook/bridged-network.html">jamielinux, bridge in /etc/networking/interfaces</a></p>
+<p><a href="https://jamielinux.com/docs/libvirt-networking-handbook/custom-routed-network.html">jamielinux, virtual bridge with brctl, need to forward packets on host</a></p>
+<p><a href="https://www.cyberciti.biz/faq/rhel-linux-kvm-virtualization-bridged-networking-with-libvirt/">RHEL turn off nework manager, create bridge</a></p>
+<p><a href="https://unix.stackexchange.com/questions/402999/it-is-ok-to-change-etc-machine-id">changing machine-id to ensure unique DHCP lease on Ubuntu with systemd</a></p>
+<p><a href="https://unix.stackexchange.com/questions/419321/why-are-my-cloned-linux-vms-fighting-for-the-same-ip">systemd uses different method to generate DUID, which is why we must use machine-id</a></p>
+<p><a href="https://superuser.com/questions/1338510/wrong-ip-address-from-dhcp-client-on-ubuntu-18-04">built in networking of Ubuntu 18.04 bionic no long uses NIC MAC address as default id for DHCP requests, instead uses machine-id, can use ‘dhcp-identifier’ in netplan</a></p>
+<p>docs, Netplan yaml confirmation [<a href="http://manpages.ubuntu.com/manpages/cosmic/man5/netplan.5.html">1</a>,<a href="https://github.com/CanonicalLtd/netplan/blob/master/doc/netplan.md">2</a>]</p>
+<p><a href="https://www.thegeekyway.com/kvm-vs-qemu-vs-libvirt/">KVM vs QEMU vs Libvirt, how they fit together</a></p>
+<p><a href="https://askubuntu.com/questions/1036266/what-is-the-most-authoritative-file-process-for-managing-ip-addresses-on-an-18-0">Ubuntu 18 installer type determines NetPlan filename, 01-netcfg.yaml or 50-cloud-init.yaml (server=01,live-server=50-cloud-init)</a></p>
+<p>NOTES</p>
+<p><strong>Add/remove IP address from network interface</strong></p>
+<pre>ip a
+sudo ip addr add 192.168.2.238/24 dev enp0s3
+ip a
+sudo ip addr del 192.168.2.238/24 dev enp0s3
+ip a</pre>
+<p>Default location for libvirt qemu network definitions, /etc/libvirt/qemu/networks</p>
+<p><strong>restart network</strong></p>
+<pre>virsh net-destroy default &amp;&amp; virsh net-start default</pre>
+<p><strong>show IP/MAC of bridge</strong></p>
+<pre>arp -n | grep virbr0</pre>
+<p><strong>DHCP status</strong></p>
+<p>virsh net-dhcp-leases –network default</p>
+<p>dhcp conf file, cat /var/lib/libvirt/dnsmasq/&lt;networkName&gt;.conf</p>
+<p>dhcp leases, cat /var/lib/libvirt/dnsmasq/&lt;networkName&gt;.hostsfile</p>
+<p><strong>delete network</strong></p>
+<pre>virsh net-autostart networkname --disablevirsh net-delete networknamevirsh net-undefine networkname</pre>
+<p><strong>MAC address uniqueness not enough to ensure unique IP lease on Ubuntu</strong></p>
+<pre># remove old ids
+sudo rm /etc/machine-id /var/lib/dbus/machine-id
+# recreate new ids
+sudo dbus-uuidgen --ensure &amp;&amp; cp /var/lib/dbus/machine-id /etc/.</pre>
+<p><strong>OS level bridge could also be used directly without needing libvirt network definition</strong></p>
+<pre>&lt;interface type='bridge'&gt;
+  &lt;mac address='52:54:00:2d:0d:fb'/&gt;
+  &lt;source bridge='br0'/&gt;
+  &lt;model type='virtio'/&gt;
+  &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/&gt;
+&lt;/interface&gt;</pre>
+<p>&nbsp;</p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><span class="screen-reader-text">Author </span> <a class="url fn n" href="https://fabianlee.org/author/admin/">Fabian</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/" rel="bookmark"><time class="entry-date published" datetime="2019-04-01T23:02:11+00:00">April 1, 2019</time><time class="updated" datetime="2019-05-26T20:42:25+00:00">May 26, 2019</time></a></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="https://fabianlee.org/category/linux/" rel="category tag">Linux</a>, <a href="https://fabianlee.org/category/virtualization/" rel="category tag">Virtualization</a></span><span class="tags-links"><span class="screen-reader-text">Tags </span><a href="https://fabianlee.org/tag/br0/" rel="tag">br0</a>, <a href="https://fabianlee.org/tag/brctl/" rel="tag">brctl</a>, <a href="https://fabianlee.org/tag/bridge/" rel="tag">bridge</a>, <a href="https://fabianlee.org/tag/host/" rel="tag">host</a>, <a href="https://fabianlee.org/tag/kvm/" rel="tag">kvm</a>, <a href="https://fabianlee.org/tag/libvirt/" rel="tag">libvirt</a>, <a href="https://fabianlee.org/tag/netplan/" rel="tag">netplan</a>, <a href="https://fabianlee.org/tag/networking/" rel="tag">networking</a>, <a href="https://fabianlee.org/tag/virtual/" rel="tag">virtual</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-1492 -->
+
+	<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="https://fabianlee.org/2019/03/24/git-bfg-for-removing-secrets-from-entire-git-history/" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">Git: BFG for removing secrets from entire git history</span></a></div><div class="nav-next"><a href="https://fabianlee.org/2019/05/26/kvm-creating-a-guest-vm-on-a-nat-network/" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">KVM: Creating a guest VM on a NAT network</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="search-2" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://fabianlee.org/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search …" value="" name="s">
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</section><section id="similar_posts_widget" class="widget widget_rrm_similar_posts"><h2 class="widget-title">Related articles</h2><ul><li><a href="https://fabianlee.org/2019/05/26/kvm-creating-a-guest-vm-on-a-nat-network/" rel="bookmark" title="KVM: Creating a guest VM on a NAT network">KVM: Creating a guest VM on a NAT network</a></li>
+
+<li><a href="https://fabianlee.org/2019/06/05/kvm-creating-a-guest-vm-on-a-network-in-routed-mode/" rel="bookmark" title="KVM: Creating a guest VM on a network in routed mode">KVM: Creating a guest VM on a network in routed mode</a></li>
+
+<li><a href="https://fabianlee.org/2018/09/17/kvm-cloning-and-fixing-ubuntu-host-using-kvm/" rel="bookmark" title="KVM: Cloning and fixing Ubuntu host using KVM">KVM: Cloning and fixing Ubuntu host using KVM</a></li>
+
+<li><a href="https://fabianlee.org/2018/10/22/kvm-using-dnsmasq-for-libvirt-dns-resolution/" rel="bookmark" title="KVM: Using dnsmasq for libvirt DNS resolution">KVM: Using dnsmasq for libvirt DNS resolution</a></li>
+
+<li><a href="https://fabianlee.org/2018/08/27/kvm-bare-metal-virtualization-on-ubuntu-with-kvm/" rel="bookmark" title="KVM: Bare metal virtualization on Ubuntu with KVM">KVM: Bare metal virtualization on Ubuntu with KVM</a></li>
+</ul><!-- Similar Posts took 35.084 ms --></section><section id="tag_cloud-3" class="widget widget_tag_cloud"><h2 class="widget-title">Tags</h2><div class="tagcloud"><ul class="wp-tag-cloud" role="list">
+	<li><a href="https://fabianlee.org/tag/bash/" class="tag-cloud-link tag-link-310 tag-link-position-1" style="font-size: 1em;">bash</a></li>
+	<li><a href="https://fabianlee.org/tag/boot/" class="tag-cloud-link tag-link-436 tag-link-position-2" style="font-size: 1em;">boot</a></li>
+	<li><a href="https://fabianlee.org/tag/build/" class="tag-cloud-link tag-link-413 tag-link-position-3" style="font-size: 1em;">build</a></li>
+	<li><a href="https://fabianlee.org/tag/certificate/" class="tag-cloud-link tag-link-423 tag-link-position-4" style="font-size: 1em;">certificate</a></li>
+	<li><a href="https://fabianlee.org/tag/cli/" class="tag-cloud-link tag-link-614 tag-link-position-5" style="font-size: 1em;">cli</a></li>
+	<li><a href="https://fabianlee.org/tag/client/" class="tag-cloud-link tag-link-210 tag-link-position-6" style="font-size: 1em;">client</a></li>
+	<li><a href="https://fabianlee.org/tag/clone/" class="tag-cloud-link tag-link-97 tag-link-position-7" style="font-size: 1em;">clone</a></li>
+	<li><a href="https://fabianlee.org/tag/cloud-foundry/" class="tag-cloud-link tag-link-613 tag-link-position-8" style="font-size: 1em;">cloud foundry</a></li>
+	<li><a href="https://fabianlee.org/tag/custom/" class="tag-cloud-link tag-link-245 tag-link-position-9" style="font-size: 1em;">custom</a></li>
+	<li><a href="https://fabianlee.org/tag/docker/" class="tag-cloud-link tag-link-438 tag-link-position-10" style="font-size: 1em;">docker</a></li>
+	<li><a href="https://fabianlee.org/tag/documentum/" class="tag-cloud-link tag-link-5 tag-link-position-11" style="font-size: 1em;">documentum</a></li>
+	<li><a href="https://fabianlee.org/tag/elasticsearch/" class="tag-cloud-link tag-link-206 tag-link-position-12" style="font-size: 1em;">elasticsearch</a></li>
+	<li><a href="https://fabianlee.org/tag/elk/" class="tag-cloud-link tag-link-181 tag-link-position-13" style="font-size: 1em;">elk</a></li>
+	<li><a href="https://fabianlee.org/tag/git/" class="tag-cloud-link tag-link-96 tag-link-position-14" style="font-size: 1em;">git</a></li>
+	<li><a href="https://fabianlee.org/tag/golang/" class="tag-cloud-link tag-link-521 tag-link-position-15" style="font-size: 1em;">golang</a></li>
+	<li><a href="https://fabianlee.org/tag/go-programming-language/" class="tag-cloud-link tag-link-552 tag-link-position-16" style="font-size: 1em;">go programming language</a></li>
+	<li><a href="https://fabianlee.org/tag/install/" class="tag-cloud-link tag-link-233 tag-link-position-17" style="font-size: 1em;">install</a></li>
+	<li><a href="https://fabianlee.org/tag/integration/" class="tag-cloud-link tag-link-285 tag-link-position-18" style="font-size: 1em;">integration</a></li>
+	<li><a href="https://fabianlee.org/tag/java/" class="tag-cloud-link tag-link-14 tag-link-position-19" style="font-size: 1em;">java</a></li>
+	<li><a href="https://fabianlee.org/tag/key/" class="tag-cloud-link tag-link-425 tag-link-position-20" style="font-size: 1em;">key</a></li>
+	<li><a href="https://fabianlee.org/tag/kvm/" class="tag-cloud-link tag-link-820 tag-link-position-21" style="font-size: 1em;">kvm</a></li>
+	<li><a href="https://fabianlee.org/tag/linux/" class="tag-cloud-link tag-link-82 tag-link-position-22" style="font-size: 1em;">linux</a></li>
+	<li><a href="https://fabianlee.org/tag/local/" class="tag-cloud-link tag-link-400 tag-link-position-23" style="font-size: 1em;">local</a></li>
+	<li><a href="https://fabianlee.org/tag/logging/" class="tag-cloud-link tag-link-63 tag-link-position-24" style="font-size: 1em;">logging</a></li>
+	<li><a href="https://fabianlee.org/tag/logstash/" class="tag-cloud-link tag-link-27 tag-link-position-25" style="font-size: 1em;">logstash</a></li>
+	<li><a href="https://fabianlee.org/tag/metrics/" class="tag-cloud-link tag-link-46 tag-link-position-26" style="font-size: 1em;">metrics</a></li>
+	<li><a href="https://fabianlee.org/tag/openssl/" class="tag-cloud-link tag-link-321 tag-link-position-27" style="font-size: 1em;">openssl</a></li>
+	<li><a href="https://fabianlee.org/tag/openwrt/" class="tag-cloud-link tag-link-55 tag-link-position-28" style="font-size: 1em;">openwrt</a></li>
+	<li><a href="https://fabianlee.org/tag/package/" class="tag-cloud-link tag-link-155 tag-link-position-29" style="font-size: 1em;">package</a></li>
+	<li><a href="https://fabianlee.org/tag/proxy/" class="tag-cloud-link tag-link-418 tag-link-position-30" style="font-size: 1em;">proxy</a></li>
+	<li><a href="https://fabianlee.org/tag/python/" class="tag-cloud-link tag-link-236 tag-link-position-31" style="font-size: 1em;">python</a></li>
+	<li><a href="https://fabianlee.org/tag/repository/" class="tag-cloud-link tag-link-112 tag-link-position-32" style="font-size: 1em;">repository</a></li>
+	<li><a href="https://fabianlee.org/tag/saltstack/" class="tag-cloud-link tag-link-102 tag-link-position-33" style="font-size: 1em;">saltstack</a></li>
+	<li><a href="https://fabianlee.org/tag/security/" class="tag-cloud-link tag-link-218 tag-link-position-34" style="font-size: 1em;">security</a></li>
+	<li><a href="https://fabianlee.org/tag/service/" class="tag-cloud-link tag-link-300 tag-link-position-35" style="font-size: 1em;">service</a></li>
+	<li><a href="https://fabianlee.org/tag/single/" class="tag-cloud-link tag-link-516 tag-link-position-36" style="font-size: 1em;">single</a></li>
+	<li><a href="https://fabianlee.org/tag/spring/" class="tag-cloud-link tag-link-294 tag-link-position-37" style="font-size: 1em;">spring</a></li>
+	<li><a href="https://fabianlee.org/tag/ssh/" class="tag-cloud-link tag-link-240 tag-link-position-38" style="font-size: 1em;">ssh</a></li>
+	<li><a href="https://fabianlee.org/tag/syslog/" class="tag-cloud-link tag-link-178 tag-link-position-39" style="font-size: 1em;">syslog</a></li>
+	<li><a href="https://fabianlee.org/tag/tls/" class="tag-cloud-link tag-link-125 tag-link-position-40" style="font-size: 1em;">tls</a></li>
+	<li><a href="https://fabianlee.org/tag/ubuntu/" class="tag-cloud-link tag-link-17 tag-link-position-41" style="font-size: 1em;">ubuntu</a></li>
+	<li><a href="https://fabianlee.org/tag/virtualbox/" class="tag-cloud-link tag-link-268 tag-link-position-42" style="font-size: 1em;">virtualbox</a></li>
+	<li><a href="https://fabianlee.org/tag/vmware/" class="tag-cloud-link tag-link-62 tag-link-position-43" style="font-size: 1em;">vmware</a></li>
+	<li><a href="https://fabianlee.org/tag/windows/" class="tag-cloud-link tag-link-9 tag-link-position-44" style="font-size: 1em;">windows</a></li>
+	<li><a href="https://fabianlee.org/tag/zabbix/" class="tag-cloud-link tag-link-281 tag-link-position-45" style="font-size: 1em;">zabbix</a></li>
+</ul>
+</div>
+</section>		<section id="recent-posts-2" class="widget widget_recent_entries">		<h2 class="widget-title">Recent Posts</h2>		<ul>
+											<li>
+					<a href="https://fabianlee.org/2020/03/27/ubuntu-adding-a-root-certificate-authority/">Ubuntu: Adding a root certificate authority</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/24/bash-examining-each-certificate-in-a-yaml-file-using-sed-and-openssl/">Bash: Examining each certificate in a yaml file using sed and openssl</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/22/kvm-testing-cloud-init-locally-using-kvm-for-a-rhel-cloud-image/">KVM: Testing cloud-init locally using KVM for a RHEL cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/17/linux-introducing-latency-and-packet-loss-into-network-for-testing/">Linux: Introducing latency and packet loss into network for testing</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/03/14/kvm-testing-cloud-init-locally-using-kvm-for-a-centos-cloud-image/">KVM: Testing cloud-init locally using KVM for a CentOS cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/23/kvm-testing-cloud-init-locally-using-kvm-for-an-ubuntu-cloud-image/">KVM: Testing cloud-init locally using KVM for an Ubuntu cloud image</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/22/kvm-terraform-and-cloud-init-to-create-local-kvm-resources/">KVM: Terraform and cloud-init to create local KVM resources</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/15/bash-associative-array-initialization-and-usage/">Bash: Associative array initialization and usage</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/02/09/bash-appending-to-existing-values-using-sed-capture-group/">Bash: Appending to existing values using sed capture group</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/bash-using-bash_rematch-to-pull-capture-groups-from-a-regex/">Bash: Using BASH_REMATCH to pull capture groups from a regex</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/bash-renaming-files-using-shell-parameter-expansion/">Bash: Renaming files using shell parameter expansion</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/29/golang-go-modules-for-package-management-during-a-multi-stage-docker-build/">GoLang: Go modules for package management during a multi-stage Docker build</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/26/golang-using-multi-stage-builds-to-create-clean-docker-images/">GoLang: Using multi-stage builds to create clean Docker images</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/24/golang-installing-the-go-programming-language-on-ubuntu/">GoLang: Installing the Go Programming language on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/24/docker-working-with-local-volumes-and-tmpfs-mounts/">Docker: Working with local volumes and tmpfs mounts</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/19/bash-using-shell-or-environment-variables-in-awk-output/">Bash: Using shell or environment variables in awk output</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/19/docker-placing-limits-on-cpu-usage-in-containers/">Docker: Placing limits on cpu usage in containers</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/18/docker-placing-limits-on-container-memory-using-cgroups/">Docker: Placing limits on container memory using cgroups</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/18/bash-skipping-lines-at-the-top-or-bottom-of-a-stream/">Bash: Skipping lines at the top or bottom of a stream</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/15/linux-outputting-single-quotes-in-awk-output/">Linux: Outputting single quotes in awk output</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/">Docker: Use overlay2 with an xfs backing filesystem to limit rootfs size</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/13/linux-mounting-a-loopback-ext4-xfs-filesystem-to-isolate-or-enforce-storage-limits/">Linux: Mounting a loopback ext4/xfs filesystem to isolate or enforce storage limits</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/13/linux-using-xfs-project-quotas-to-limit-capacity-within-a-subdirectory/">Linux: Using xfs project quotas to limit capacity within a subdirectory</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/11/python-using-flask-to-upload-files/">Python: Using Flask to upload files</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/10/bash-outputting-text-in-color-for-readability/">Bash: Outputting text in color for readability</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2020/01/04/bash-performing-floating-arithmetic-using-bc/">Bash: Performing floating arithmetic using bc</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/11/18/python-using-flask-to-stream-chunked-dynamic-content-to-end-users/">Python: Using Flask to stream chunked dynamic content to end users</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/23/docker-running-a-postfix-container-for-testing-mail-during-development/">Docker: Running a Postfix container for testing mail during development</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/23/python-sending-html-emails-via-gmail-api-or-smtp-relay/">Python: Sending HTML emails via Gmail API or SMTP relay</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/06/zabbix-using-docker-compose-to-install-and-upgrade-zabbix/">Zabbix: Using Docker Compose to install and upgrade Zabbix</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/10/05/bash-setting-and-replacing-values-in-a-properties-file-use-sed/">Bash: setting and replacing values in a properties file use sed</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/30/bash-running-command-on-quoted-list-of-parameters-using-xargs/">Bash: Running command on quoted list of parameters using xargs</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/28/docker-installing-docker-ce-on-ubuntu-bionic-18-04/">Docker: Installing Docker CE on Ubuntu bionic 18.04</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/22/python-using-a-custom-decorator-to-inspect-function-arguments/">Python: Using a custom decorator to inspect function arguments</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/21/python-using-inspection-to-view-the-parameters-of-a-function/">Python: Using inspection to view the parameters of a function</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/15/python-getting-live-output-from-subprocess-using-poll/">Python: Getting live output from subprocess using poll</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/14/python-parsing-command-line-arguments-with-argparse/">Python: Parsing command line arguments with argparse</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/09/08/powershell-creating-a-self-signed-certificate-using-powershell-without-makecert-or-iis/">PowerShell: Creating a self-signed certificate using Powershell without makecert or IIS</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/05/kvm-creating-a-guest-vm-on-a-network-in-routed-mode/">KVM: Creating a guest VM on a network in routed mode</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/05/ubuntu-debug-iptables-by-inserting-a-log-rule/">Ubuntu: Debug iptables by inserting a log rule</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/06/03/openwrt-installing-tcpdump-from-opkg/">OpenWrt: Installing tcpdump from opkg</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/05/26/kvm-creating-a-guest-vm-on-a-nat-network/">KVM: Creating a guest VM on a NAT network</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/04/01/kvm-creating-a-bridged-network-with-netplan-on-ubuntu-bionic/" aria-current="page">KVM: Creating a bridged network with NetPlan on Ubuntu bionic</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/24/git-bfg-for-removing-secrets-from-entire-git-history/">Git: BFG for removing secrets from entire git history</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/17/wordpress-cloning-your-wordpress-site-locally-using-docker-compose/">WordPress: Cloning your WordPress site locally using Docker Compose</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/10/python-jsonpath-to-extract-vcenter-information-using-govc/">Python: JSONPath to extract vCenter information using govc</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/10/python-querying-json-files-with-jsonpath-using-jsonpath_rw_ext/">Python: Querying JSON files with JSONPath using jsonpath_rw_ext</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/09/vmware-using-the-govc-cli-to-automate-vcenter-commands/">VMware: Using the govc CLI to automate vCenter commands</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/03/09/linux-7zip-to-split-archives-for-use-on-windows/">Linux: 7zip to split archives for use on Windows</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/27/linux-sed-to-cleanup-json-that-has-errant-text-surrounding-it/">Linux: sed to cleanup json that has errant text surrounding it</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/16/kvm-virt-manager-to-connect-to-a-remote-console-using-qemussh/">KVM: virt-manager to connect to a remote console using qemu+ssh</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/15/ubuntu-create-an-nfs-server-mount-on-ubuntu/">Ubuntu: Create an NFS server mount on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/11/linux-use-stat-to-verify-permissions-and-ownership/">Linux: Use stat to verify permissions and ownership</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/11/kubernetes-running-minikube-locally-on-ubuntu-using-kvm/">Kubernetes: running Minikube locally on Ubuntu using KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/02/03/ubuntu-x2go-on-ubuntu-bionic-for-remote-desktop-access/">Ubuntu: X2Go on Ubuntu bionic for remote desktop access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/28/git-client-error-server-certificate-verification-failed/">Git: client error, server certificate verification failed</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/27/cloudfoundry-cli-error-unexpected-end-of-json-input/">CloudFoundry: CLI error, unexpected end of JSON input</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/13/ubuntu-apt-get-error-yarn-signature-verification/">Ubuntu: apt-get error, yarn signature verification</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/cloudfoundry-the-lifecycle-of-a-simple-bosh-release/">CloudFoundry: The lifecycle of a simple BOSH release</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/aws-bash-helper-functions-for-common-aws-cli-calls/">AWS: Bash helper functions for common AWS CLI calls</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/12/cloudfoundry-installing-a-bosh-director-on-aws/">CloudFoundry: Installing a BOSH Director on AWS</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2019/01/02/aws-installing-the-aws-sdk-for-python-on-ubuntu/">AWS: Installing the AWS SDK for Python on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/16/aws-installing-the-aws-cli-on-ubuntu/">AWS: Installing the AWS CLI on Ubuntu</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/15/java-ftp-with-an-http-proxy-using-the-connect-method/">Java: FTP with an HTTP proxy using the CONNECT method</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/09/git-contributing-to-a-git-project-using-a-pull-request/">Git: Contributing to a git project using a pull request</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/ubuntu-auditing-sudo-commands-and-forwarding-audit-logs-using-syslog/">Ubuntu: Auditing sudo commands and forwarding audit logs using syslog</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/python-calling-python-functions-from-mako-templates/">Python: Calling python functions from mako templates</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/02/git-sharing-a-single-git-controlled-folder-among-a-group-under-linux/">Git: Sharing a single git controlled folder among a group under Linux</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/01/python-using-pip-with-a-squid-proxy/">Python: Using pip with a squid proxy</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/12/01/git-forcing-git-to-use-vim-for-commit-messages/">Git: Forcing git to use vim for commit messages</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/11/14/ubuntu-determining-the-package-origin-of-a-file/">Ubuntu: Determining the package origin of a file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/11/06/kvm-deploy-the-vmware-vcenter-appliance-using-the-cli-installer/">KVM: Deploy the VMware vCenter appliance using the CLI installer</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/30/linux-using-gpg-encrypted-credentials-for-enhanced-security/">Linux: Using GPG encrypted credentials for enhanced security</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/30/linux-using-zip-unzip-to-add-update-and-remove-files-from-a-java-jar-war/">Linux: Using zip/unzip to add, update, and remove files from a Java jar/war</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/28/linux-using-sed-to-insert-lines-before-or-after-a-match/">Linux: Using sed to insert lines before or after a match</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/25/powershell-create-windows-scheduled-task-to-run-powershell-script-every-hour/">PowerShell: Create Windows Scheduled Task to run Powershell script every hour</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/22/kvm-using-dnsmasq-for-libvirt-dns-resolution/">KVM: Using dnsmasq for libvirt DNS resolution</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/15/linux-copy-a-directory-preserving-ownership-permissions-and-modification-date/">Linux: Copy a directory preserving ownership, permissions, and modification date</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ruby-copying-gems-to-hosts-with-limited-internet-access/">Ruby: Copying gems to hosts with limited internet access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ruby-creating-selenium-tests-using-headless-chrome-and-ruby2/">Ruby: Creating Selenium tests using headless Chrome and Ruby2</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/14/ubuntu-x11-forwarding-to-view-gui-applications-running-on-server-hosts/">Ubuntu: X11 forwarding to view GUI applications running on server hosts</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/12/linux-excluding-files-based-on-extension-and-age-with-tar/">Linux: Excluding files based on extension and age with tar</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/10/saltstack-escaping-dollar-signs-in-cmd-run-parameters-to-avoid-interpolation/">SaltStack: Escaping dollar signs in cmd.run parameters to avoid interpolation</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/10/openwrt-archive-router-configs-for-backup/">OpenWrt: Archive router configs for backup</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/07/putty-bulk-import-putty-session-definitions-into-the-registry-using-powershell/">PuTTy: Bulk import PuTTy session definitions into the registry using Powershell</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/06/kvm-creating-an-ubuntu-vm-with-console-only-access/">KVM: Creating an Ubuntu VM with console-only access</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/10/02/elk-deleting-unassigned-shards-to-restore-cluster-health/">ELK: Deleting unassigned shards to restore cluster health</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/28/ubuntu-customizing-and-repacking-a-deb-file/">Ubuntu: Customizing and repacking a deb file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/26/linux-excluding-directories-when-using-zip/">Linux: Excluding directories when using zip</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/24/kvm-implementing-linked-clones-with-a-backing-file/">KVM: Implementing linked clones with a backing file</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/23/ubuntu-gathering-hardware-and-bios-details/">Ubuntu: Gathering hardware and BIOS details</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/23/bash-reading-input-from-the-console-while-looping-over-output-of-command/">Bash: Reading input from the console while looping over output of  command</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/19/kvm-deploying-a-nested-version-of-vmware-esxi-6-7-inside-kvm/">KVM: Deploying a nested version of VMware ESXi 6.7 inside KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/kvm-cloning-and-fixing-ubuntu-host-using-kvm/">KVM: Cloning and fixing Ubuntu host using KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/iptables-running-service-as-non-root-iptables-to-forward-from-privileged-port/">iptables: Running service as non-root, iptables to forward from privileged port</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/17/ubuntu-using-iptables-to-forward-tcp-and-udp-requests/">Ubuntu: Using iptables to forward tcp and udp requests</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/16/vagrant-fixing-error-while-downloading-the-metadata-for-this-box/">Vagrant: Fixing “error while downloading the metadata for this box”</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/13/ubuntu-alternate-firmware-bios-for-kvm/">KVM: Alternate firmware BIOS for KVM</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/13/kvm-building-the-latest-seabios-firmware-for-virtual-machines/">KVM: Building the latest SeaBIOS firmware for virtual machines</a>
+									</li>
+											<li>
+					<a href="https://fabianlee.org/2018/09/12/kvm-building-the-latest-ovmf-firmware-for-virtual-machines/">KVM: Building the latest OVMF firmware for virtual machines</a>
+									</li>
+					</ul>
+		</section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">Categories</h2>		<ul>
+				<li class="cat-item cat-item-534"><a href="https://fabianlee.org/category/automation/">Automation</a>
+</li>
+	<li class="cat-item cat-item-482"><a href="https://fabianlee.org/category/containers/">Containers</a>
+</li>
+	<li class="cat-item cat-item-596"><a href="https://fabianlee.org/category/development/">Development</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="https://fabianlee.org/category/devops/">DevOps</a>
+</li>
+	<li class="cat-item cat-item-756"><a href="https://fabianlee.org/category/dne/">DNE</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://fabianlee.org/category/dctm/">Documentum</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="https://fabianlee.org/category/java/">Java</a>
+</li>
+	<li class="cat-item cat-item-33"><a href="https://fabianlee.org/category/linux/">Linux</a>
+</li>
+	<li class="cat-item cat-item-471"><a href="https://fabianlee.org/category/logging/">Logging</a>
+</li>
+	<li class="cat-item cat-item-464"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a>
+</li>
+	<li class="cat-item cat-item-116"><a href="https://fabianlee.org/category/openwrt/">OpenWrt</a>
+</li>
+	<li class="cat-item cat-item-244"><a href="https://fabianlee.org/category/python/">Python</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://fabianlee.org/category/scripting/">Scripting</a>
+</li>
+	<li class="cat-item cat-item-917"><a href="https://fabianlee.org/category/virtualization/">Virtualization</a>
+</li>
+		</ul>
+			</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+							<nav class="main-navigation" role="navigation" aria-label="Footer Primary Menu">
+					<div class="menu-categories-container"><ul id="menu-categories-1" class="primary-menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-897"><a href="https://fabianlee.org/category/monitoring/">Monitoring</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-896"><a href="https://fabianlee.org/category/logging/">Logging</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-936"><a href="https://fabianlee.org/category/containers/">Containers</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1156"><a href="https://fabianlee.org/category/python/">Python</a></li>
+</ul></div>				</nav><!-- .main-navigation -->
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="https://fabianlee.org/" rel="home">Fabian Lee : Software Architect</a></span>
+								<a href="https://wordpress.org/" class="imprint">
+					Proudly powered by WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/wp-syntax.js"></script>
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/skip-link-focus-fix.js"></script>
+<script>
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+</script>
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/functions.js"></script>
+<script src="./KVM_ Creating a bridged network with NetPlan on Ubuntu bionic – Fabian Lee _ Software Architect_files/enlighterjs.min.js"></script>
+<script>
+!function(n,o){"undefined"!=typeof EnlighterJS?(n.EnlighterJSINIT=function(){EnlighterJS.init("pre.EnlighterJSRAW", "code.EnlighterJSRAW", {"indent":2,"ampersandCleanup":true,"linehover":true,"rawcodeDbclick":true,"textOverflow":"break","linenumbers":true,"theme":"enlighter","language":"generic","retainCssClasses":false,"collapse":false,"toolbarOuter":"","toolbarTop":"{BTN_RAW}{BTN_COPY}{BTN_WINDOW}{BTN_WEBSITE}","toolbarBottom":""})})():(o&&(o.error||o.log)||function(){})("Error: EnlighterJS resources not loaded yet!")}(window,console);
+</script>
+
+
+</body></html>
