@@ -1,0 +1,1 @@
+1. Major entry point: the vlib_main function in  /src/vlib/main.c
