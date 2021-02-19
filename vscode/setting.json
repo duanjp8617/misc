@@ -2,7 +2,7 @@
     // I plan to maintain a personal vscode setting file. The following is all general settings.
     
     // Note: vscode has three kinds of setting files, which are user, workspace and folder settings. folder setting overwrites workspace setting, which further overwrites user setting. To use the setting.json file, create a .vscode folder in the project root directory. Then copy this file there.
-    
+    // Note again: use Awesome Emacs Keymap authored by Yuichiro Tsuchiya
     // The eidtor setting.
 
     // Controls the font size in pixels.
