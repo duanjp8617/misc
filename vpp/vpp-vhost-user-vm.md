@@ -49,3 +49,34 @@ vppctl create vhost-user socket /var/run/vpp/name.sock server
 3. The mode must be set as client, otherwise the VM will not boot.
 
 4. The path must be directed to the unix domain socket created previously by VPP.
+
+# Bind vpp-threads to CPU cores
+1. In the CPU section of the VPP configuration file, do the following:
+```shell
+main-core 0 # set main core to 0
+corelist-workers 1 # Configure only a single worker, and bind the worker to core 1
+```
+
+2. Then start VPP.
+
+# Debugging the vhost-user class
+1. Enable the following configuraiton in startup.conf:
+```shell
+logging {
+   ## set default logging level for logging buffer
+   ## logging levels: emerg, alert,crit, error, warn, notice, info, debug, disabled
+   default-log-level debug
+   ## set default logging level for syslog or stderr output
+   # default-syslog-log-level info
+   ## Set per-class configuration
+   # class dpdk/cryptodev { rate-limit 100 level debug syslog-level error }
+}
+"star
+```
+
+2. Run the following command in vppctl
+```shell
+set logging class vhost-user level debug syslog-level debug
+```
+
+3. Then use show log to check the debug output from vhost-user 
