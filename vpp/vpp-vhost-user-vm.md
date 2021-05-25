@@ -25,14 +25,17 @@
 4. An example VM xml file is also stored in this directory.
 
 # Creating vhost-user port inside VPP
-1. Create two vhost-user port inside VPP, first use the default configuration.
+1. Create two vhost-user port inside VPP using the following command. Note that the this feature-mask enables multi-queue mode for the vhost-user interface.
 ```shell
-vppctl create vhost-user socket /var/run/vpp/name.sock server
+vppctl create vhost-user socket /var/run/vpp/name.sock server feature-mask 0x40400000
 ```
 
 2. Bring the two interface up in VPP and connect them to the same bridge.
 
-3. Last and most important, the /var/run/vpp/name.sock unix domain socket is owned by root, with vpp as default group. Unfortuantely, this unix domain socket can not be operated by VMs created by libvirt. This is because VMs created by libvirt is owned by a special user called **libvirt-qemu**. So we must change the user of /var/run/vpp/name.sock to **libvirt-qemu**.
+3. Last and most important, the /var/run/vpp/name.sock unix domain socket is owned by root, with vpp as default group. Unfortuantely, this unix domain socket can not be operated by VMs created by libvirt. This is because VMs created by libvirt is owned by a special user called **libvirt-qemu**. So we must change the user of /var/run/vpp/name.sock to **libvirt-qemu**, with the following command:
+```shell
+chown libvirt-qemu /var/run/vpp/name.sock 
+```
 
 # Adding vhost-user network interface to VM
 1. Adding the following content to the VM xml file:
@@ -41,6 +44,7 @@ vppctl create vhost-user socket /var/run/vpp/name.sock server
       <mac address='52:54:00:4c:47:f2'/>
       <source type='unix' path='/var/run/vpp/name.sock' mode='client'/>
       <model type='virtio'/>
+      <driver queues='2'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
 </interface>
 ```
@@ -50,11 +54,17 @@ vppctl create vhost-user socket /var/run/vpp/name.sock server
 
 4. The path must be directed to the unix domain socket created previously by VPP.
 
+5. Surprisingly, the actual number of queues used by VPP's vhost-user interface is actually determined by the VM configuration. The ```<driver queues='2'/>``` configures two queues for this NIC. During the initialization phase of the qemu VM, the NIC, which acts as the vhost client, will contact with the vhost-user interface on the VPP, and reconfigures the number of queues used by the vhost-user interface.
+
+6. When the VM starts, we can see that the vhost-user interface in VPP occupies two queues.
+
+7. If the number of queues equal the number of worker cores used by VPP, then VPP prefers to bind each queue to a unique worker thread.
+
 # Bind vpp-threads to CPU cores
 1. In the CPU section of the VPP configuration file, do the following:
 ```shell
 main-core 0 # set main core to 0
-corelist-workers 1 # Configure only a single worker, and bind the worker to core 1
+corelist-workers 1-2 # Configure two workers, and bind each worker to core 1 and 2, respectively
 ```
 
 2. Then start VPP.
@@ -79,4 +89,4 @@ logging {
 set logging class vhost-user level debug syslog-level debug
 ```
 
-3. Then use show log to check the debug output from vhost-user 
+3. Then use ```show log``` to check the debug output from vhost-user 
