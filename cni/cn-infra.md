@@ -1,3 +1,5 @@
+
+# Code analysis of datasync-example
 * use ```logrus.DefaultLogger().Warnf()``` to add custom print messages. 
 
 * ```ExamplePlugin``` calls the ```Watch``` method on the ```kvdbsync``` plugin, passing in several channels for event notifications and key prefixes to watch. The ```Watch``` method does not do too many things, in fact, it will register the channels and prefixes internally and returns a handle ```WatchRegistration``` back to the ```ExamplePlugin```.
@@ -18,7 +20,10 @@
             * This method just list all the values under the keys, store the key-val pairs inside a resync event, and sends the event into the resyncChan (which is passed in by the example plugin)
             * The resync event contains another channel for response notification. After the example plugin has consumed the resync event, it should sends the response back through this channel. When ```resync``` method receives this response, the resync procedure is done. (two way handshake)
         * Finally, when ```resync``` is finished, the goroutine responds an acknowledgement using the resync event.
-    * If the example plugin has sent the changeChan, the method also starts to watch the etcd database for th key prefix. In case that the value under the key changes, the ```watchChanges``` callback is invoked.
+    * If the example plugin has sent the changeChan, the method also starts to watch the etcd database for th key prefix. In case that the value under the key crephanges, the ```watchChanges``` callback is invoked.
         * 
 
 * The initial resync event is sent by calling the ```DoResync``` method of the resync plugin.
+
+# How to neatly store state on the database
+
