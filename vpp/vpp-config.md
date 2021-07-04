@@ -4,3 +4,8 @@
 ```bash
 sysctl -f /etc/sysctl.d/80-vpp.conf
 ```
+
+3. If we run VPP inside a desktop, we can prevent the CPU from busy polling by adding
+```bash
+poll-sleep-usec 100
+```
