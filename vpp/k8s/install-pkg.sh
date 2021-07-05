@@ -1,7 +1,11 @@
 #/bin/sh
 
+# The ubuntu version must be xenial, or it can not be installed
 ubuntu=xenial
-version=1.20.5-00
+
+# coredns 1.8.0 is not available on alicloud, so we have to stick to an older version
+# I don't know how to fix it yet
+version=1.17.17-00
 
 apt-get install docker.io -y
 apt-get install -y apt-transport-https curl
