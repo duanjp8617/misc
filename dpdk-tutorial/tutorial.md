@@ -61,8 +61,7 @@ show port stats all
 4. On the sender, execute the following command:
 ```shell
 cd ~/dpdk-stable-20.11.3/build/app
-sudo dpdk-testpmd -l 3,4 -n 4 -- -i --eth-peer=0,50:6b:4b:5c:68:40 --forw
-ard-mode=txonly --portlist=0 --txpkts=80
+sudo dpdk-testpmd -l 3,4 -n 4 -- -i --eth-peer=0,50:6b:4b:5c:68:40 --forward-mode=txonly --portlist=0 --txpkts=80
 start
 ```
 
@@ -113,13 +112,10 @@ Now you have two memif virutal NIC available on your system.
 
 9. Launch the receiver testpmd
 ```shell
-sudo ./dpdk-testpmd -l 2,3 -n 4 --vdev net_memif0,role=client,id=250,socket=
-/run/vpp/memif.sock,socket-abstract=no,zero-copy=yes --single-file-segments --file-prefix config250 -- -i --portlist=2
+sudo ./dpdk-testpmd -l 2,3 -n 4 --vdev net_memif0,role=client,id=250,socket=/run/vpp/memif.sock,socket-abstract=no,zero-copy=yes --single-file-segments --file-prefix config250 -- -i --portlist=2
 ```
 
 10. Launch the sender testpmd
 ```shell
-sudo dpdk-testpmd -l 4,5 -n 4 --vdev net_memif0,role=client,id=251,socket=/ru
-n/vpp/memif.sock,socket-abstract=no,zero-copy=yes --single-file-segments --file-prefix config251 -- -i --eth-peer=0,7A
-:4E:1A:90:15:7D --forward-mode=txonly --portlist=2
+sudo dpdk-testpmd -l 4,5 -n 4 --vdev net_memif0,role=client,id=251,socket=/run/vpp/memif.sock,socket-abstract=no,zero-copy=yes --single-file-segments --file-prefix config251 -- -i --eth-peer=0,7A:4E:1A:90:15:7D --forward-mode=txonly --portlist=2
 ```
