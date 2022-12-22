@@ -29,3 +29,5 @@ add the following code to the user configuration json file of vscode:
     },
 ]
 ```
+
+4. Then you can add nice-looking source code to latex source file. A basic tutorial can be found on: https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted
