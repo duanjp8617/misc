@@ -33,3 +33,5 @@ add the following code to the user configuration json file of vscode:
 4. Then you can add nice-looking source code to latex source file. A basic tutorial can be found on: https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted
 
 5. use [linenos,xleftmargin=\parindent] to align the line numbers to the left margin 
+
+6. https://tex.stackexchange.com/questions/280590/work-around-for-minted-code-highlighting-in-arxiv
