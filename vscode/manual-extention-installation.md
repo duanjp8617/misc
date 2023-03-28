@@ -1,0 +1,2 @@
+# Install extention manually
+Sometimes, vscode is not able to automatically install the extention manually. To resolve this issue, we can simply download the extention file (with a .vsix exntention name)  and use the command "Extentions: Install from VSIX" from the command pallate.
