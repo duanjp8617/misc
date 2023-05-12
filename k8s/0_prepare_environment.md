@@ -36,7 +36,7 @@ cloud-localds cloud-config.img cloud-config
 qemu-img resize cloud-vm.img +10G 
 ```
 
-4. Run the following command to create a new VM (need virt-install, will enter an interactive session for the initial bootup, use Ctrl+Shift+] to escape). Here, the size=20 indicates the size of the disk, I don't know if this option really impact the size of the disk in practice:
+4. Run the following command to create a new VM (need virt-install, will enter an interactive session for the initial bootup, use Ctrl+Shift+] to escape). 
 
 ```shell
 virt-install --connect=qemu:///system \
@@ -76,10 +76,10 @@ rm -f cloud-config*
 sudo virt-install \
      --import \
      --noreboot \
-     --name master \
+     --name w2 \
      --vcpus 16 \
      --memory 16384 \
-     --disk path=$PWD/master.img,format=qcow2,bus=virtio \
+     --disk path=$PWD/w2.img,format=qcow2,bus=virtio \
      --accelerate \
      --network=network:default,model=virtio \
      --serial pty \
@@ -195,7 +195,7 @@ renderer: networkd
 ethernets:
     ens3:
       dhcp4: yes
-    ens10:
+    ens4:
       dhcp4: yes
 ```
 
@@ -206,13 +206,13 @@ ethernets:
 sudo virt-install \
      --import \
      --noreboot \
-     --name worker3 \
+     --name w2 \
      --vcpus 16 \
      --memory 16384 \
-     --disk path=$PWD/worker3.img,format=qcow2,bus=virtio \
+     --disk path=$PWD/w2.img,format=qcow2,bus=virtio \
      --accelerate \
      --network=network:default,model=virtio \
-     --network=network:internal,model=virtio \
+     --network=network:internal1,model=virtio \
      --serial pty \
      --cpu host \
      --rng=/dev/random
