@@ -35,3 +35,34 @@ Host target-box
     IdentityFile ~/.ssh/target
     ProxyCommand ssh -q -W %h:%p jump-box
 ```
+
+# How to pull docker images
+
+国内访问docker hub的速度实在是太慢了，几乎大部分的命令都无法正常执行。个人感到比较好用的方法有两个：
+
+## `docker_pull.py`
+1. 从网址`https://github.com/NotGlop/docker-drag/blob/master/docker_pull.py`下载`docker_pull.py`文件。
+
+2. 利用`docker_pull.py`文件从指定要下载的镜像名。注意：无法直连，需卦代理。
+
+3. 用下列命令来安装存储在本地的镜像
+```shell
+docker load -i image.tar
+```
+
+## 设置dockerd代理
+
+1. 根据`https://docs.docker.com/config/daemon/systemd/#httphttps-proxy`，创建`/etc/systemd/system/docker.service.d/http-proxy.conf`文件
+
+2. 向文件中写入下列内容（支持socks5 proxy）：
+```shell
+[Service]
+Environment="HTTP_PROXY=socks5://127.0.0.1:1080"
+Environment="HTTPS_PROXY=socks5://127.0.0.1:1080"
+```
+
+3. 利用下列命令重启docker服务：
+```shell
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
