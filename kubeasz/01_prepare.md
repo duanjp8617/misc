@@ -30,7 +30,6 @@ An initial step to deployment environment for the localhost
 
 - Repeat the same procedure for both `kube-scheduler` and `kube-controller-manager`=
   - The user name is prefixed with `system:`, therefore `system:kube-scheduler` and `system:kube-controller-manager`
-
 ## Prepare
 
 Perform an initial configuration for each node machine.
