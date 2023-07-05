@@ -118,6 +118,11 @@ Start an exited container.
 
 Detach from an interactive container.
 
+`sudo docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs sudo docker rm
+`:
+
+Remove all containers that are exited
+
 # 2. Build the TVM ci docker image
 
 It has 76 build tasks. Without a good proxy, it is not possible to build. 
