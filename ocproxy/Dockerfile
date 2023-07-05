@@ -4,7 +4,7 @@ FROM ubuntu:18.04
 # modified by djp
 
 # Update packages
-RUN apt-get update && \
+RUN apt-get update
 
 # Install packages
 RUN apt-get -y install \
