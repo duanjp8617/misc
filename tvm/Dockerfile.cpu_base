@@ -1,0 +1,5 @@
+# Adopted from https://github.com/octoml/public-tvm-docker/blob/master/Dockerfile.cpu_base
+
+FROM python:3.8-bullseye
+
+RUN 
