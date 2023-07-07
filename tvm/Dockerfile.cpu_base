@@ -1,5 +1,113 @@
-# Adopted from https://github.com/octoml/public-tvm-docker/blob/master/Dockerfile.cpu_base
+# Adopted from tvm/docker/Dockerfile.ci_minimal
 
-FROM python:3.8-bullseye
+FROM ubuntu:22.04
 
-RUN 
+# update apt to tuna source
+COPY files/sources.list /etc/apt/sources.list
+RUN apt-get update && apt-get install -y ca-certificates && apt-get update
+
+# install core packages
+RUN apt-get -y --no-install-recommends install \
+    apt-transport-https \
+    curl \
+    g++ \
+    gdb \
+    git \
+    graphviz \
+    libcurl4-openssl-dev \
+    libopenblas-dev \
+    libssl-dev \
+    libtinfo-dev \
+    libz-dev \
+    lsb-core \
+    make \
+    ninja-build \
+    parallel \
+    pkg-config \
+    sudo \
+    unzip \
+    wget \
+    cmake \ 
+    && apt-get clean
+
+# build and install gtest from source
+ARG GTEST_VERSION=1.13.0
+COPY files/googletest-$GTEST_VERSION.tar.gz /tmp/
+RUN tar -xvf /tmp/googletest-$GTEST_VERSION.tar.gz -C /tmp \
+    && mkdir /tmp/googletest-$GTEST_VERSION/build \
+    && cd /tmp/googletest-$GTEST_VERSION/build \
+    && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib .. \ 
+    && cmake --build . --target install \
+    && rm -rf /tmp/*
+
+# misc notes:
+# 1. query the public key of deadsnakes by executing the following command and updating the apt cahce
+# echo "deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
+# 2. Manually download the gpg key of the deadsnakes:
+# gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
+
+# install python3.8
+ARG PYTHON_VERSION=3.8
+ARG TZ=Etc/UTC
+# set up the timezone, otherwise the python install will prompt you to input timezone information
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone
+RUN apt-get -y install software-properties-common 
+# generate the deadsnakes gpg file
+RUN gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
+# add deadsnakes apt source
+RUN echo "deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://launchpad.proxy.ustclug.org/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
+RUN apt-get update \
+    && apt-get install -y \
+       acl \
+       python${PYTHON_VERSION} \
+       python${PYTHON_VERSION}-dev \
+       python3-pip \
+       python${PYTHON_VERSION}-venv
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python${PYTHON_VERSION} 1 \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python${PYTHON_VERSION} 1
+
+# setup python venv
+ENV TVM_VENV /venv/apache-tvm-py3.8
+RUN venv_dir="$(python3 -c "import os.path;print(os.path.dirname(\"${TVM_VENV}\"))")" \
+    && mkdir -p "${venv_dir}" \ 
+    && python3 -mvenv "${TVM_VENV}" \
+    && . "${TVM_VENV}/bin/activate"
+RUN addgroup tvm-venv \
+    && chgrp -R tvm-venv "${TVM_VENV}" \
+    && setfacl -R -d -m group:tvm-venv:rwx "${TVM_VENV}" \
+    && setfacl -R -m group:tvm-venv:rwx "${TVM_VENV}" 
+ENV PATH ${TVM_VENV}/bin:$PATH
+
+# install python packages
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+    "Pygments>=2.4.0" \
+    attrs \
+    cloudpickle \
+    cython \
+    decorator \
+    mypy \
+    numpy==1.21.* \
+    orderedset \
+    packaging \
+    Pillow==9.1.0 \
+    psutil \
+    pytest \
+    pytest-profiling \
+    pytest-xdist \
+    pytest-rerunfailures==10.2 \
+    requests \
+    scipy \
+    Jinja2 \
+    junitparser==2.4.2 \
+    six \
+    tornado \
+    pytest-lazy-fixture \
+    ml_dtypes
+
+# install llvm
+RUN apt-get install -y \
+    llvm-14 clang-14 libclang-14-dev
+
+# install redis
+RUN apt-get install -y redis-server && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple xgboost==1.4.2
