@@ -1,9 +1,14 @@
 # Adopted from tvm/docker/Dockerfile.ci_minimal
+# notes:
+# 1. query the public key of deadsnakes by executing the following command and updating the apt cahce
+# echo "deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
+# 2. Manually download the gpg key of the deadsnakes:
+# gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
 
 FROM ubuntu:22.04
 
 # update apt to tuna source
-COPY files/sources.list /etc/apt/sources.list
+COPY ./sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates && apt-get update
 
 # install core packages
@@ -32,31 +37,28 @@ RUN apt-get -y --no-install-recommends install \
 
 # build and install gtest from source
 ARG GTEST_VERSION=1.13.0
-COPY files/googletest-$GTEST_VERSION.tar.gz /tmp/
-RUN tar -xvf /tmp/googletest-$GTEST_VERSION.tar.gz -C /tmp \
+COPY files/googletest.tar.gz /tmp/
+RUN tar -xvf /tmp/googletest.tar.gz -C /tmp \
     && mkdir /tmp/googletest-$GTEST_VERSION/build \
     && cd /tmp/googletest-$GTEST_VERSION/build \
     && cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_INSTALL_LIBDIR=lib .. \ 
-    && cmake --build . --target install \
-    && rm -rf /tmp/*
+    && cmake --build . --target install 
 
-# misc notes:
-# 1. query the public key of deadsnakes by executing the following command and updating the apt cahce
-# echo "deb https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
-# 2. Manually download the gpg key of the deadsnakes:
-# gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
+# set up the timezone, otherwise the python install will prompt you to input timezone information
+ARG TZ=Etc/UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone
+
+# generate the deadsnakes gpg file
+ARG DEADSNAKE_GPG_KEY=BA6932366A755776
+RUN apt-get -y install software-properties-common 
+RUN gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys ${DEADSNAKE_GPG_KEY}
+
+# add deadsnakes apt source
+RUN echo "deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://launchpad.proxy.ustclug.org/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
 
 # install python3.8
 ARG PYTHON_VERSION=3.8
-ARG TZ=Etc/UTC
-# set up the timezone, otherwise the python install will prompt you to input timezone information
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone
-RUN apt-get -y install software-properties-common 
-# generate the deadsnakes gpg file
-RUN gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes.gpg --keyserver keyserver.ubuntu.com --recv-keys BA6932366A755776
-# add deadsnakes apt source
-RUN echo "deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://launchpad.proxy.ustclug.org/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
 RUN apt-get update \
     && apt-get install -y \
        acl \
@@ -111,3 +113,12 @@ RUN apt-get install -y \
 
 # install redis
 RUN apt-get install -y redis-server && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple xgboost==1.4.2
+
+# install ccache
+ARG CCACHE_VERSION=4.8.2
+COPY files/ccache.tar.gz /tmp/
+RUN tar -xvf /tmp/ccache.tar.gz -C /tmp \
+    && cp /tmp/ccache-${CCACHE_VERSION}-linux-x86_64/ccache /usr/local/bin
+
+# clean up the /tmp folder
+RUN rm -rf /tmp/*

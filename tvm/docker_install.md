@@ -123,6 +123,10 @@ Detach from an interactive container.
 
 Remove all containers that are exited
 
+`sudo docker image prune`:
+
+Remove all the dangling images
+
 # 2. Build the TVM ci docker image
 
 It has 76 build tasks. Without a good proxy, it is not possible to build. 
@@ -172,3 +176,8 @@ It has 76 build tasks. Without a good proxy, it is not possible to build.
   - [Failed] However, since all the pre-built images have huge size, the pulling process always stuck at sometime and restarts. 
 
 # 4. Prepare my own image for compiling tvm
+
+- Switch to this directory.
+- Use `download.sh` to download dependencies and tvm source
+- `sudo docker build -f Dockerfile.cpu_base -t tvm_dev:v1 .` to build the docker image
+- `sudo docker run -it -d --name tvm_dev -v $PWD/tvm:/workspace/tvm tvm_dev:v1`
