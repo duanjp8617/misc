@@ -120,5 +120,17 @@ COPY files/ccache.tar.gz /tmp/
 RUN tar -xvf /tmp/ccache.tar.gz -C /tmp \
     && cp /tmp/ccache-${CCACHE_VERSION}-linux-x86_64/ccache /usr/local/bin
 
+# copy vscode development environment
+ARG VSCODE_COMMIT=695af097c7bd098fbf017ce3ac85e09bbc5dda06
+COPY files/vscode-server-linux-x64.tar.gz /tmp
+RUN tar -xvf /tmp/vscode-server-linux-x64.tar.gz -C /tmp \
+    && mkdir -p ~/.vscode-server/bin \
+    && mv /tmp/vscode-server-linux-x64 ~/.vscode-server/bin/$VSCODE_COMMIT
+ENV PATH="$PATH:/root/.vscode-server/bin/${VSCODE_COMMIT}/bin"
+
+# copy vscode extentions
+COPY files/ms-python.python.vsix /workspace/code_exts/ms-python.python.vsix
+COPY files/cpptools-linux.vsix /workspace/code_exts/cpptools-linux.vsix
+
 # clean up the /tmp folder
 RUN rm -rf /tmp/*

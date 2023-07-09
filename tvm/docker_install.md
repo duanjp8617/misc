@@ -181,3 +181,31 @@ It has 76 build tasks. Without a good proxy, it is not possible to build.
 - Use `download.sh` to download dependencies and tvm source
 - `sudo docker build -f Dockerfile.cpu_base -t tvm_dev:v1 .` to build the docker image
 - `sudo docker run -it -d --name tvm_dev -v $PWD/tvm:/workspace/tvm tvm_dev:v1`
+
+# 5. Compile TVM inside the container
+
+- Follow the instruction at `https://tvm.apache.org/docs/install/from_source.html` 
+  - `mkdir build`
+  - `cp ./cmake/config.cmake ./build`
+  - update `set(USE_LLVM "llvm-config-14 --link-static")` in the `config.cmake` file
+  - `cmake .. && make -j` 
+  - After build, we can just set two global environment variables in the `~/.bashrc` for the python environment to know where the tvm is:
+    ```
+    export TVM_HOME=/workspace/tvm
+    export PYTHONPATH=$TVM_HOME/python:${PYTHONPATH}
+    ```
+  - this should complete the build process for a cpu-only environment
+
+# 6. Remote development with vscode 
+
+- Use the following command to add the current user to the docker group:
+  ```
+  sudo usermod -aG docker $USER
+  ```
+- Install a series of useful extentions:
+  - `Dev Container` extention for development inside the container
+  - `Python` extention for working with tvm's python
+- Open up a work space of the dev container
+  - The container is built with a python venv located at /venv, so first configure `Python` extention to search for this venv.
+    - Add `/venv` to `Python Venv Path` in the settings. 
+
