@@ -33,6 +33,7 @@ RUN apt-get -y --no-install-recommends install \
     unzip \
     wget \
     cmake \ 
+    vim \
     && apt-get clean
 
 # build and install gtest from source
@@ -107,9 +108,9 @@ RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
     pytest-lazy-fixture \
     ml_dtypes
 
-# install llvm
+# install llvm and clang
 RUN apt-get install -y \
-    llvm-14 clang-14 libclang-14-dev
+    llvm-14 clang-14 libclang-14-dev clangd-14
 
 # install redis
 RUN apt-get install -y redis-server && pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple xgboost==1.4.2
@@ -121,7 +122,7 @@ RUN tar -xvf /tmp/ccache.tar.gz -C /tmp \
     && cp /tmp/ccache-${CCACHE_VERSION}-linux-x86_64/ccache /usr/local/bin
 
 # copy vscode development environment
-ARG VSCODE_COMMIT=695af097c7bd098fbf017ce3ac85e09bbc5dda06
+ARG VSCODE_COMMIT=660393deaaa6d1996740ff4880f1bad43768c814
 COPY files/vscode-server-linux-x64.tar.gz /tmp
 RUN tar -xvf /tmp/vscode-server-linux-x64.tar.gz -C /tmp \
     && mkdir -p ~/.vscode-server/bin \
@@ -129,8 +130,11 @@ RUN tar -xvf /tmp/vscode-server-linux-x64.tar.gz -C /tmp \
 ENV PATH="$PATH:/root/.vscode-server/bin/${VSCODE_COMMIT}/bin"
 
 # copy vscode extentions
-COPY files/ms-python.python.vsix /workspace/code_exts/ms-python.python.vsix
-COPY files/cpptools-linux.vsix /workspace/code_exts/cpptools-linux.vsix
+COPY files/python.vsix /workspace/code_exts/python.vsix
+COPY files/vscode-clangd.vsix /workspace/code_exts/vscode-clangd.vsix
+
+# copy post_build_setup.sh
+COPY post_build_setup.sh /workspace/post_build_setup.sh
 
 # clean up the /tmp folder
 RUN rm -rf /tmp/*
