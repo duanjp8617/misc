@@ -17,7 +17,7 @@ wget -O $PWD/files/ccache.tar.gz https://github.com/ccache/ccache/releases/downl
 wget -O $PWD/files/vscode-server-linux-x64.tar.gz https://update.code.visualstudio.com/commit:${VSCODE_COMMIT}/server-linux-x64/stable
 
 wget -O $PWD/files/python.vsix https://open-vsx.org/api/ms-python/python/${CODE_PYTHON_EXT}/file/ms-python.python-${CODE_PYTHON_EXT}.vsix
-wget -O $PWD/files/vscode-clangd.vsix https://github.com/clangd/vscode-clangd/releases/download/${CODE_CLANGD_EXT}/vscode-clangd-0.1.24.vsix
+wget -O $PWD/files/vscode-clangd.vsix https://github.com/clangd/vscode-clangd/releases/download/${CODE_CLANGD_EXT}/vscode-clangd-${CODE_CLANGD_EXT}.vsix
 
 # use the following command to clone the tvm repo
 # git clone --recursive --depth=1 https://github.com/mlc-ai/relax.git tvm

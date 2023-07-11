@@ -127,7 +127,6 @@ COPY files/vscode-server-linux-x64.tar.gz /tmp
 RUN tar -xvf /tmp/vscode-server-linux-x64.tar.gz -C /tmp \
     && mkdir -p ~/.vscode-server/bin \
     && mv /tmp/vscode-server-linux-x64 ~/.vscode-server/bin/$VSCODE_COMMIT
-ENV PATH="$PATH:/root/.vscode-server/bin/${VSCODE_COMMIT}/bin"
 
 # copy vscode extentions
 COPY files/python.vsix /workspace/code_exts/python.vsix
