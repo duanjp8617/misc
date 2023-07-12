@@ -8,7 +8,7 @@
 FROM ubuntu:22.04
 
 # update apt to tuna source
-COPY ./sources.list /etc/apt/sources.list
+COPY configs/sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y ca-certificates && apt-get update
 
 # install core packages
@@ -106,7 +106,9 @@ RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
     six \
     tornado \
     pytest-lazy-fixture \
-    ml_dtypes
+    ml_dtypes \
+    onnx \
+    onnxoptimizer
 
 # install llvm and clang
 RUN apt-get install -y \
@@ -133,6 +135,8 @@ COPY files/python.vsix /workspace/code_exts/python.vsix
 COPY files/vscode-clangd.vsix /workspace/code_exts/vscode-clangd.vsix
 
 # copy post_build_setup.sh
+COPY configs/config.yaml /workspace/configs/config.yaml
+COPY configs/settings.json /workspace/configs/settings.json
 COPY post_build_setup.sh /workspace/post_build_setup.sh
 
 # clean up the /tmp folder
