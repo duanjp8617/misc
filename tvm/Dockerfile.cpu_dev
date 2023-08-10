@@ -124,7 +124,7 @@ RUN tar -xvf /tmp/ccache.tar.gz -C /tmp \
     && cp /tmp/ccache-${CCACHE_VERSION}-linux-x86_64/ccache /usr/local/bin
 
 # copy vscode development environment
-ARG VSCODE_COMMIT=660393deaaa6d1996740ff4880f1bad43768c814
+ARG VSCODE_COMMIT=74f6148eb9ea00507ec113ec51c489d6ffb4b771
 COPY files/vscode-server-linux-x64.tar.gz /tmp
 RUN tar -xvf /tmp/vscode-server-linux-x64.tar.gz -C /tmp \
     && mkdir -p ~/.vscode-server/bin \

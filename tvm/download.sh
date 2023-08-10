@@ -21,4 +21,3 @@ wget -O $PWD/files/vscode-clangd.vsix https://github.com/clangd/vscode-clangd/re
 
 # use the following command to clone the tvm repo
 # git clone --recursive --depth=1 https://github.com/mlc-ai/relax.git tvm
-
