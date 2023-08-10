@@ -1,0 +1,32 @@
+{
+    "clangd.arguments": [
+        "--background-index",
+        "--compile-commands-dir=build",
+        "-j=12",
+        // "--folding-ranges",
+        // "--query-driver=/usr/bin/clang++",
+        // "--clang-tidy",
+        "--all-scopes-completion",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--header-insertion=iwyu"
+        // "--pch-storage=disk",
+    ],
+    "clangd.path": "/usr/bin/clangd-14",
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    // the following changes the color of the C++ comments, including the 
+    // the doxygen tags inside the comments
+    "editor.tokenColorCustomizations": {
+        "comments": "#94928f",
+        "textMateRules": [
+            {
+                "scope": "storage.type.class.doxygen",
+                "settings": {
+                    "foreground": "#94928f"
+                }
+            }
+        ]
+    },
+}
