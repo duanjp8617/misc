@@ -126,3 +126,7 @@ Remove all containers that are exited
 `sudo docker image prune`:
 
 Remove all the dangling images
+
+
+https://unix.stackexchange.com/questions/403424/x11-forwarding-from-a-docker-container-in-remote-server
+https://github.com/JAremko/docker-emacs
