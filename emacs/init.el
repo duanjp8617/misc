@@ -24,6 +24,9 @@
 (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
+;; configure the visual line mode
+;; (global-visual-line-mode t)
+
 ;; -------------------------------------------------
 ;; line numbers
 ;; -------------------------------------------------
@@ -258,3 +261,9 @@
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+
+;; -------------------------------------------------
+;; tips
+;; -------------------------------------------------
+;; 1. use "M-x eshell" and "M-x rename-buffer" to open multiple eshells
