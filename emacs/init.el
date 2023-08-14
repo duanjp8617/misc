@@ -263,7 +263,37 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 
+
 ;; -------------------------------------------------
-;; tips
+;; tips: open multiple shells
 ;; -------------------------------------------------
-;; 1. use "M-x eshell" and "M-x rename-buffer" to open multiple eshells
+;; use "M-x eshell" and "M-x rename-buffer" to open multiple eshells
+
+;; -------------------------------------------------
+;; tips: window management
+;; -------------------------------------------------
+;; 1. enlarge window with a specified column:
+;; "C-u 7" follwed by "C-x {/}", here "C-u" provides a universal argument
+;; 2. "C-x 4" provides some additional commands to operate the windows
+;;    Useful commands include:
+;;    - "C-x 4 C-j": dired-jump-other-window
+;;    - "C-x 4 d": dired-other-window
+;; 3. "C-x +" balances all the opened windows
+;; 4. "M-PgUp" and "M-PgDn" moves the other window without focusing it.
+;; 5. "M-x windmove-swap-states-up/down/left/right" 
+
+;; -------------------------------------------------
+;; tips: tab bar mode
+;; -------------------------------------------------
+;; 1. "M-x tab-bar-mode" to enable tab bar mode
+;; 2. use "C-x t" to operate on the tabs
+;; 3. "C-x t RET" seems to work better
+;; 4. in my current configuration, doom-modeline will show the tab number on the left
+
+
+
+
+
+
+
+
