@@ -7,5 +7,6 @@ if [ ! -d "~/.fonts" ]; then
 fi
 
 tar -xvf $CODE_DIR/FiraCode.tar.xz -C ~/.fonts
+tar -xvf $CODE_DIR/NerdFontsSymbolsOnly.tar.xz -C ~/.fonts
 fc-cache -fv
 echo "done!, check with fc-list command"

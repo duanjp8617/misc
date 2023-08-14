@@ -10,3 +10,4 @@ fi
 echo "[-] Download fonts [-]"
 echo "https://github.com/ryanoasis/nerd-fonts/releases/download/$VERSION/FiraCode.tar.xz"
 wget -O ./downloads/FiraCode.tar.xz https://github.com/ryanoasis/nerd-fonts/releases/download/$VERSION/FiraCode.tar.xz
+wget -O ./downloads/NerdFontsSymbolsOnly.tar.xz https://github.com/ryanoasis/nerd-fonts/releases/download/$VERSION/NerdFontsSymbolsOnly.tar.xz
