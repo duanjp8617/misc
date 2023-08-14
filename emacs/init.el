@@ -304,6 +304,12 @@
 ;; 3. "C-x t RET" seems to work better
 ;; 4. in my current configuration, doom-modeline will show the tab number on the left
 
+;; -------------------------------------------------
+;; tips: dired
+;; -------------------------------------------------
+;; 1. use "C-x d" to enter the dired-by-name mode
+;; 2. when open a file, use "C-x C-j" to jump to the root directory owning this file in dire.
+;; 3. in dire window, use "^" to go up one layer of directory
 
 
 
