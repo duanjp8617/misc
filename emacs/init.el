@@ -69,6 +69,20 @@
 (setq-default tab-width 2)
 
 ;; -------------------------------------------------
+;; configure tab-bar-mode
+;; -------------------------------------------------
+(tab-bar-mode)
+(setq tab-bar-new-tab-choice "*scratch*")
+(setq tab-bar-new-tab-to 'rightmost)
+(setq tab-bar-close-button-show nil
+			tab-bar-new-button-show nil)
+(setq tab-bar-tab-hints t)                 ;; show tab numbers
+(setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+;; move tab bar with "M-[" and "M-]"
+(global-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
+
+;; -------------------------------------------------
 ;; configure package installations
 ;; -------------------------------------------------
 (require 'package)
