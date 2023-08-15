@@ -238,6 +238,10 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
+;; This can be extremly useful for configuring the git commit messages,
+;; but it can take some time before I can figure it out.
+;; Also, doing git in china is a pain in the butt, so I might need to mix
+;; the workflow of magit with shell command (which can bypass firewalls with proxies).
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
