@@ -9,7 +9,8 @@ apt install -y \
   libpng-dev \
   libgif-dev \
   libtiff-dev \
-  libgtk2.0-dev \
+  libgtk-3-dev \
+  libcanberra-gtk3-module \
   libncurses-dev \
   libgnutls28-dev \
   wget
