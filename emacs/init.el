@@ -204,6 +204,8 @@
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
+				 ;; the counsel-find-file defaults to the current dired
+				 ;; directory
          ("C-x C-f" . counsel-find-file)
 				 ;; counsel-minibufer-history mapping does not work
          ;; :map minibuffer-local-map
@@ -268,6 +270,9 @@
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
 
+;; -------------------------------------------------
+;; configure magit
+;; -------------------------------------------------
 ;; This can be extremly useful for configuring the git commit messages,
 ;; but it can take some time before I can figure it out.
 ;; Also, doing git in china is a pain in the butt, so I might need to mix
@@ -276,7 +281,61 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+;; -------------------------------------------------
+;; configure dired
+;; -------------------------------------------------
+(use-package dired
+  :ensure nil
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  ;; :config
+  ;; (evil-collection-define-key 'normal 'dired-mode-map
+  ;;   "h" 'dired-single-up-directory
+  ;;   "l" 'dired-single-buffer)
+	)
 
+;; -------------------------------------------------
+;; lsp basic configurations
+;; -------------------------------------------------
+;; ;; show a nice-looking banner at the top
+;; (defun efs/lsp-mode-setup ()
+;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+;;   (lsp-headerline-breadcrumb-mode))
+
+;; ;; configure lsp-mode
+;; (use-package lsp-mode
+;;   :commands (lsp lsp-deferred)
+;;   :hook (lsp-mode . efs/lsp-mode-setup)
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+;;   :config
+;;   (lsp-enable-which-key-integration t))
+
+;; ;; use lsp-ui
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :custom
+;;   (lsp-ui-doc-position 'bottom))
+
+;; ;; use lsp-ivy
+;; (use-package lsp-ivy)
+
+;; ;; auto-completion with company
+;; (use-package company
+;;   :after lsp-mode
+;;   :hook (lsp-mode . company-mode)
+;;   :bind (:map company-active-map
+;;          ("<tab>" . company-complete-selection))
+;;         (:map lsp-mode-map
+;;          ("<tab>" . company-indent-or-complete-common))
+;;   :custom
+;;   (company-minimum-prefix-length 1)
+;;   (company-idle-delay 0.0))
+
+;; ;; ;; use company-box to improve the ui of the company pop-up
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
 
 ;; -------------------------------------------------
 ;; tips: open multiple shells
