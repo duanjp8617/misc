@@ -288,12 +288,24 @@
   :ensure nil
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :custom ((dired-listing-switches "-AGFhlv --group-directories-first --time-style=long-iso"))
   ;; :config
   ;; (evil-collection-define-key 'normal 'dired-mode-map
   ;;   "h" 'dired-single-up-directory
   ;;   "l" 'dired-single-buffer)
 	)
+
+;; -------------------------------------------------
+;; configure dired-subtree
+;; -------------------------------------------------
+(use-package dired-subtree
+	:ensure t
+	:after dired
+  :custom (dired-subtree-use-backgrounds nil)
+  :bind (:map dired-mode-map
+							("<tab>" . dired-subtree-toggle)
+							("<C-tab>". dired-subtree-cycle)
+							("<backtab>" . dired-subtree-remove)))
 
 ;; -------------------------------------------------
 ;; lsp basic configurations
