@@ -5,19 +5,15 @@ FROM ubuntu:22.04
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
 RUN bash /scripts/update_apt_source.sh
 
+COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
+RUN bash /scripts/install_ssh_server.sh
+
 COPY scripts/setup_time_zone.sh /scripts/setup_time_zone.sh
 RUN bash /scripts/setup_time_zone.sh
 
 COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
-# to setup a venv, we run our own commands
-ENV VENV ~/pyvenv
-RUN mkdir -p "${VENV}" \ 
-    && python3 -mvenv "${TVM_VENV}" \
-    && . "${TVM_VENV}/bin/activate"
-RUN addgroup tvm-venv \
-    && chgrp -R tvm-venv "${TVM_VENV}" \
-    && setfacl -R -d -m group:tvm-venv:rwx "${TVM_VENV}" \
-    && setfacl -R -m group:tvm-venv:rwx "${TVM_VENV}" 
-ENV PATH ${TVM_VENV}/bin:$PATH
+COPY scripts/setup_python_venv.sh /scripts/setup_python_env.sh
+RUN bash /scripts/setup_python_env.sh
+

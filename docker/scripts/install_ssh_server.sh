@@ -1,13 +1,13 @@
-USER=djp
-PWD=djp
-
 apt install -y openssh-server sudo
 
 # uncomment the following lines if you want root login
 # echo 'root:root' | chpasswd
 # sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 
-# add a new user
+# add a new user with root priviledge
+USER=djp
+PWD=djp
+
 useradd -ms /bin/bash $USER
 echo "$USER:$PWD" | chpasswd
 usermod -aG sudo $USER
