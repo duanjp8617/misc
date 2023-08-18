@@ -301,6 +301,7 @@
 (use-package dired-subtree
 	:ensure t
 	:after dired
+	:config (dired-hide-details-mode)
   :custom (dired-subtree-use-backgrounds nil)
   :bind (:map dired-mode-map
 							("<tab>" . dired-subtree-toggle)
