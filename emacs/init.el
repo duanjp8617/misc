@@ -37,7 +37,8 @@
 (dolist (mode '(org-mode-hook
 								term-mode-hook
 								eshell-mode-hook
-							  shell-mode-hook))
+							  shell-mode-hook
+								treemacs-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; -------------------------------------------------
@@ -71,16 +72,18 @@
 ;; -------------------------------------------------
 ;; configure tab-bar-mode
 ;; -------------------------------------------------
-(tab-bar-mode)
-(setq tab-bar-new-tab-choice "*scratch*")
-(setq tab-bar-new-tab-to 'rightmost)
-(setq tab-bar-close-button-show nil
-			tab-bar-new-button-show nil)
-(setq tab-bar-tab-hints t)                 ;; show tab numbers
-(setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
-;; move tab bar with "M-[" and "M-]"
-(global-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
+;; (tab-bar-mode)
+;; (setq tab-bar-new-tab-choice "*scratch*")
+;; (setq tab-bar-new-tab-to 'rightmost)
+;; ;; hide tab buttons
+;; (setq tab-bar-close-button-show nil
+;; 			 tab-bar-new-button-show nil)
+;; ;; show tab numbers
+;; (setq tab-bar-tab-hints t)
+;; (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+;; ;; move tab bar with "M-[" and "M-]"
+;; (global-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)
+;; (global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
 
 ;; -------------------------------------------------
 ;; configure package installations
@@ -255,7 +258,8 @@
   ;; (when (file-directory-p "~/workspace")
 	;; 	(setq projectile-project-search-path '("~/workspace")))
 	(setq projectile-project-search-path '("~/"))
-  (setq projectile-switch-project-action #'projectile-dired))
+  ;; (setq projectile-switch-project-action #'projectile-dired)
+	)
 
 ;; -------------------------------------------------
 ;; configure counsel-projectile
@@ -284,29 +288,47 @@
 ;; -------------------------------------------------
 ;; configure dired
 ;; -------------------------------------------------
-(use-package dired
-  :ensure nil
-  :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
-  :custom ((dired-listing-switches "-AGFhlv --group-directories-first --time-style=long-iso"))
-  ;; :config
-  ;; (evil-collection-define-key 'normal 'dired-mode-map
-  ;;   "h" 'dired-single-up-directory
-  ;;   "l" 'dired-single-buffer)
-	)
+;; (use-package dired
+;;   :ensure nil
+;;   :commands (dired dired-jump)
+;;   :bind (("C-x C-j" . dired-jump))
+;;   :custom ((dired-listing-switches "-AGFhlv --group-directories-first --time-style=long-iso"))
+;;   ;; :config
+;;   ;; (evil-collection-define-key 'normal 'dired-mode-map
+;;   ;;   "h" 'dired-single-up-directory
+;;   ;;   "l" 'dired-single-buffer)
+;; 	)
 
 ;; -------------------------------------------------
 ;; configure dired-subtree
 ;; -------------------------------------------------
-(use-package dired-subtree
+;; (use-package dired-subtree
+;; 	:ensure t
+;; 	:after dired
+;; 	:config (dired-hide-details-mode)
+;;   :custom (dired-subtree-use-backgrounds nil)
+;;   :bind (:map dired-mode-map
+;; 							("<tab>" . dired-subtree-toggle)
+;; 							("<C-tab>". dired-subtree-cycle)
+;; 							("<backtab>" . dired-subtree-remove)))
+
+;; -------------------------------------------------
+;; configure treemacs
+;; -------------------------------------------------
+;; treemacs seems to be a better substitute for dired
+(use-package treemacs
 	:ensure t
-	:after dired
-	:config (dired-hide-details-mode)
-  :custom (dired-subtree-use-backgrounds nil)
-  :bind (:map dired-mode-map
-							("<tab>" . dired-subtree-toggle)
-							("<C-tab>". dired-subtree-cycle)
-							("<backtab>" . dired-subtree-remove)))
+	:config
+	(setq treemacs-is-never-other-window t))
+
+(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  :after (treemacs)
+  :ensure t
+	:bind
+	(:map global-map
+				([f5] . treemacs)
+				([f6] . treemacs-select-window))
+  :config (treemacs-set-scope-type 'Tabs))
 
 ;; -------------------------------------------------
 ;; lsp basic configurations
