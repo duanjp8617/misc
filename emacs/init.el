@@ -72,18 +72,18 @@
 ;; -------------------------------------------------
 ;; configure tab-bar-mode
 ;; -------------------------------------------------
-;; (tab-bar-mode)
-;; (setq tab-bar-new-tab-choice "*scratch*")
-;; (setq tab-bar-new-tab-to 'rightmost)
-;; ;; hide tab buttons
-;; (setq tab-bar-close-button-show nil
-;; 			 tab-bar-new-button-show nil)
-;; ;; show tab numbers
-;; (setq tab-bar-tab-hints t)
-;; (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
-;; ;; move tab bar with "M-[" and "M-]"
-;; (global-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)
-;; (global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
+(tab-bar-mode)
+(setq tab-bar-new-tab-choice "*scratch*")
+(setq tab-bar-new-tab-to 'rightmost)
+;; hide tab buttons
+(setq tab-bar-close-button-show nil
+			 tab-bar-new-button-show nil)
+;; show tab numbers
+(setq tab-bar-tab-hints t)
+(setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
+;; move tab bar with "M-[" and "M-]"
+(global-set-key (kbd "M-[") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
 
 ;; -------------------------------------------------
 ;; configure package installations
@@ -319,16 +319,12 @@
 (use-package treemacs
 	:ensure t
 	:config
-	(setq treemacs-is-never-other-window t))
+	(setq treemacs-is-never-other-window t)
+	:bind (:map global-map
+				  ([f5] . treemacs)
+				  ([f6] . treemacs-select-window)))
 
-(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-  :after (treemacs)
-  :ensure t
-	:bind
-	(:map global-map
-				([f5] . treemacs)
-				([f6] . treemacs-select-window))
-  :config (treemacs-set-scope-type 'Tabs))
+
 
 ;; -------------------------------------------------
 ;; lsp basic configurations
