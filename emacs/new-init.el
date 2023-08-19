@@ -64,33 +64,35 @@
 ;; Resizing the Emacs frame can be a terribly expensive part of changing the
 ;; font. By inhibiting this, we easily halve startup times with fonts that are
 ;; larger than the system default.
-;; (setq frame-inhibit-implied-resize t)
+(setq frame-inhibit-implied-resize t)
 
 ;; -----------------------------------------------------------------------------
 ;; Better Defaults - General, from: https://github.com/KaratasFurkan/.emacs.d
 ;; -----------------------------------------------------------------------------
-;; (setq-default
-;;  ring-bell-function 'ignore                    ; prevent beep sound.
-;;  inhibit-startup-screen t                      ; TODO: maybe better on early-init or performance?
-;;  initial-major-mode 'fundamental-mode          ; TODO: maybe better on early-init or performance?
-;;  initial-scratch-message nil                   ; TODO: maybe better on early-init?
-;;  create-lockfiles nil                          ; .#locked-file-name
-;;  confirm-kill-processes nil                    ; exit emacs without asking to kill processes
-;;  backup-by-copying t                           ; prevent linked files
-;;  require-final-newline t                       ; always end files with newline
-;;  delete-old-versions t                         ; don't ask to delete old backup files
-;;  revert-without-query '(".*")                  ; `revert-buffer' without confirmation
-;;  uniquify-buffer-name-style 'forward           ; non-unique buffer name display: unique-part/non-unique-filename
-;;  fast-but-imprecise-scrolling t                ; supposed to make scrolling faster on hold
-;;  window-resize-pixelwise t                     ; correctly resize windows by pixels (e.g. in split-window functions)
-;;  native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
-;;  ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got redefined" warnings
-;;  use-short-answers t                           ; e.g. `y-or-n-p' instead of `yes-or-no-p'
-;;  help-enable-symbol-autoload t)                ; perform autoload if docs are missing from autoload objects.
-;; (global-auto-revert-mode)                      ; keep buffers sync with the files on the disk
-;; (save-place-mode)                              ; When you visit a file, point goes to the last place where it was when you previously
-;;         																			 ; visited the same file
-;; (global-so-long-mode)                          ; better handling files with long lines?
+(setq-default
+ ring-bell-function 'ignore                    ; prevent beep sound.
+ inhibit-startup-screen t                      ; TODO: maybe better on early-init or performance?
+ initial-major-mode 'fundamental-mode          ; TODO: maybe better on early-init or performance?
+ initial-scratch-message nil                   ; TODO: maybe better on early-init?
+ create-lockfiles nil                          ; .#locked-file-name
+ confirm-kill-processes nil                    ; exit emacs without asking to kill processes
+ backup-by-copying t                           ; prevent linked files
+ require-final-newline t                       ; always end files with newline
+ delete-old-versions t                         ; don't ask to delete old backup files
+ revert-without-query '(".*")                  ; `revert-buffer' without confirmation
+ uniquify-buffer-name-style 'forward           ; non-unique buffer name display: unique-part/non-unique-filename
+ fast-but-imprecise-scrolling t                ; supposed to make scrolling faster on hold
+ window-resize-pixelwise t                     ; correctly resize windows by pixels (e.g. in split-window
+																							 ; functions)
+ native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
+ ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got
+																							 ; redefined" warnings
+ use-short-answers t                           ; e.g. `y-or-n-p' instead of `yes-or-no-p'
+ help-enable-symbol-autoload t)                ; perform autoload if docs are missing from autoload objects.
+(global-auto-revert-mode)                      ; keep buffers sync with the files on the disk
+(save-place-mode)                              ; When you visit a file, point goes to the last place where it
+																							 ; was when you previously visited the same file
+(global-so-long-mode)                          ; better handling files with long lines?
 
 ;; -----------------------------------------------------------------------------
 ;; Set up a directory for storing backup files
@@ -105,12 +107,12 @@
 (blink-cursor-mode -1)
 
 (setq-default
- ;; truncate-lines t
- ;; frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
+ ;;truncate-lines t
+ frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
  frame-title-format '("Emacs | %b"))  ; Emacs | buffer-name
 
 ;; -----------------------------------------------------------------------------
-;; configure emacs basic ui
+;; configure emacs basic ui: from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; basic ui configure
 (setq inhibit-startup-message t)  ; Remove the start up message
@@ -194,7 +196,7 @@ size. This function also handles icons and modeline font sizes."
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; -----------------------------------------------------------------------------
-;; line numbers
+;; line numbers: from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -252,22 +254,29 @@ size. This function also handles icons and modeline font sizes."
 (global-set-key (kbd "M-]") 'tab-bar-switch-to-next-tab)
 
 ;; -----------------------------------------------------------------------------
-;; set visual-fill-column, from https://github.com/KaratasFurkan/.emacs.d
+;; configure fill mode
 ;; -----------------------------------------------------------------------------
-(use-package visual-fill-column
-  :commands visual-fill-column-mode
-  ;; comment the following hook if you want to enable visual-line-mode as well
-	:hook
-  (visual-fill-column-mode . visual-line-mode)
-	:config
-	(setq visual-fill-column-width 50))
+;; enable visual-line-mode for text-based mode
+(dolist (mode '(text-mode-hook
+						    tex-mode-hook))
+  (add-hook mode (lambda () (visual-line-mode 1))))
 
-;; (dolist (mode '(prog-mode-hook
-;; 								text-mode-hook))
-;;   (add-hook mode (lambda () (visual-fill-column-mode 1))))
+;; enable auto-fill-mode for programming mode
+(setq-default fill-column 110)
+
+(dolist (mode '(prog-mode-hook
+								))
+  (add-hook mode (lambda () (auto-fill-mode 1))))
+
+;; insert a ruler for certain mode
+;; (setq fci-rule-column 110)
+(dolist (mode '(prog-mode-hook
+								text-mode-hook
+								tex-mode-hook))
+  (add-hook mode (lambda () (fci-mode 1))))
 
 ;; -----------------------------------------------------------------------------
-;; highlight matching braces
+;; highlight matching braces, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; it seems that in emacs 28.2, paren is automatically enabled by default
 ;; in lower version, may be you should enable paren to see the matching parens
@@ -277,14 +286,14 @@ size. This function also handles icons and modeline font sizes."
   (show-paren-mode 1))
 
 ;; -----------------------------------------------------------------------------
-;; command-log-mode
+;; command-log-mode, from emacs from scratch
 ;; M-x globa-command-log-mode        ;enable this to see all the commands
 ;; M-x clm/toggle-command-log-buffer ;show a command log buffer
 ;; -----------------------------------------------------------------------------
 ;; (use-package command-log-mode)
 
 ;; -----------------------------------------------------------------------------
-;; set up ivy completion engine
+;; set up ivy completion engine, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; ivy and swipper are part of counsel, so we install counsel here first
 (use-package counsel
@@ -311,7 +320,7 @@ size. This function also handles icons and modeline font sizes."
   (ivy-mode 1))
 
 ;; -----------------------------------------------------------------------------
-;; configure counsel
+;; configure counsel, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
@@ -325,7 +334,7 @@ size. This function also handles icons and modeline font sizes."
 	))
 
 ;; -----------------------------------------------------------------------------
-;; enable ivy-rich
+;; enable ivy-rich, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (use-package ivy-rich
   :init
@@ -343,7 +352,7 @@ size. This function also handles icons and modeline font sizes."
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
 
 ;; -----------------------------------------------------------------------------
-;; enable doom-modeline
+;; enable doom-modeline, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (use-package doom-modeline
   :ensure t
@@ -351,13 +360,13 @@ size. This function also handles icons and modeline font sizes."
   :custom ((doom-modeline-height 25)))
 
 ;; -----------------------------------------------------------------------------
-;; enable doom-themes
+;; enable doom-themes, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (use-package doom-themes
   :init (load-theme 'doom-dracula t))
 
 ;; -----------------------------------------------------------------------------
-;; enable which-key
+;; enable which-key, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 (use-package which-key
   :init (which-key-mode)
@@ -366,7 +375,7 @@ size. This function also handles icons and modeline font sizes."
   (setq which-key-idle-delay 1))
 
 ;; -----------------------------------------------------------------------------
-;; configure help
+;; configure help, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; it enhances the emacs help manuals
 (use-package helpful
@@ -380,14 +389,14 @@ size. This function also handles icons and modeline font sizes."
   ([remap describe-key] . helpful-key))
 
 ;; -----------------------------------------------------------------------------
-;; configure dockerfile-mode
+;; configure dockerfile-mode, from https://github.com/KaratasFurkan/.emacs.d
 ;; -----------------------------------------------------------------------------
 ;; it messes up the init.el file after buffer evaluation, so use with caution
 (use-package dockerfile-mode
   :mode "Dockerfile\\'")
 
 ;; -----------------------------------------------------------------------------
-;; configure projectile
+;; configure projectile, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; 1. projectile treats all the git directories with commits as projects under the configured search path
 ;; 2. the following configuration binds "C-c p" to invoke projectile. The which-key package can show the
@@ -410,7 +419,7 @@ size. This function also handles icons and modeline font sizes."
 	)
 
 ;; -----------------------------------------------------------------------------
-;; configure counsel-projectile
+;; configure counsel-projectile, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; By loading the counsel-project, it modifies the default behavior of projectile
 ;; by a little bit.
@@ -423,7 +432,7 @@ size. This function also handles icons and modeline font sizes."
   :config (counsel-projectile-mode))
 
 ;; -----------------------------------------------------------------------------
-;; configure magit
+;; configure magit, from emacs from scratch
 ;; -----------------------------------------------------------------------------
 ;; This can be extremly useful for configuring the git commit messages,
 ;; but it can take some time before I can figure it out.
@@ -545,8 +554,3 @@ size. This function also handles icons and modeline font sizes."
 ;; 1. use "C-x d" to enter the dired-by-name mode
 ;; 2. when open a file, use "C-x C-j" to jump to the root directory owning this file in dire.
 ;; 3. in dire window, use "^" to go up one layer of directory
-
-
-
-
-
