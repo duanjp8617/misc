@@ -256,21 +256,22 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 ;; configure fill mode
 ;; -----------------------------------------------------------------------------
-;; enable visual-line-mode for text-based mode
-(dolist (mode '(text-mode-hook
-						    tex-mode-hook))
-  (add-hook mode (lambda () (visual-line-mode 1))))
-
-;; enable auto-fill-mode for programming mode
+;; set the fill-column value to 110
 (setq-default fill-column 110)
 
+;; insert a ruler for certain modes
+(dolist (mode '(prog-mode-hook))
+  (add-hook mode (lambda () (fci-mode 1))))
+
+;; enable auto-fill-mode for programming mode
 (dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (auto-fill-mode 1))))
 
-;; insert a ruler for certain mode
-;; (setq fci-rule-column 110)
-(dolist (mode '(prog-mode-hook))
-  (add-hook mode (lambda () (fci-mode 1))))
+;; enable visual-line-mode for text-based mode
+;; it seems that visual-line-mode has conflicts with fci-mode, so they can be
+;; enabled simultaneously
+(dolist (mode '(text-mode-hook))
+  (add-hook mode (lambda () (visual-line-mode 1))))
 
 ;; -----------------------------------------------------------------------------
 ;; highlight matching braces, from emacs from scratch
@@ -484,47 +485,47 @@ size. This function also handles icons and modeline font sizes."
 (add-to-list 'image-types 'svg) 
 
 
-;; -------------------------------------------------
-;; lsp basic configurations
-;; -------------------------------------------------
-;; ;; show a nice-looking banner at the top
-;; (defun efs/lsp-mode-setup ()
-;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-;;   (lsp-headerline-breadcrumb-mode))
+;; -----------------------------------------------------------------------------
+;; lsp basic configurations, from emacs from scratch
+;; -----------------------------------------------------------------------------
+;; show a nice-looking banner at the top
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
 
-;; ;; configure lsp-mode
-;; (use-package lsp-mode
-;;   :commands (lsp lsp-deferred)
-;;   :hook (lsp-mode . efs/lsp-mode-setup)
-;;   :init
-;;   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-;;   :config
-;;   (lsp-enable-which-key-integration t))
+;; configure lsp-mode
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
 
-;; ;; use lsp-ui
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :custom
-;;   (lsp-ui-doc-position 'bottom))
+;; use lsp-ui
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :custom
+  (lsp-ui-doc-position 'bottom))
 
-;; ;; use lsp-ivy
-;; (use-package lsp-ivy)
+;; use lsp-ivy
+(use-package lsp-ivy)
 
-;; ;; auto-completion with company
-;; (use-package company
-;;   :after lsp-mode
-;;   :hook (lsp-mode . company-mode)
-;;   :bind (:map company-active-map
-;;          ("<tab>" . company-complete-selection))
-;;         (:map lsp-mode-map
-;;          ("<tab>" . company-indent-or-complete-common))
-;;   :custom
-;;   (company-minimum-prefix-length 1)
-;;   (company-idle-delay 0.0))
+;; auto-completion with company
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
 
-;; ;; ;; use company-box to improve the ui of the company pop-up
-;; (use-package company-box
-;;   :hook (company-mode . company-box-mode))
+;; use company-box to improve the ui of the company pop-up
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 ;; -------------------------------------------------
 ;; tips: open multiple shells
