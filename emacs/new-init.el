@@ -264,15 +264,12 @@ size. This function also handles icons and modeline font sizes."
 ;; enable auto-fill-mode for programming mode
 (setq-default fill-column 110)
 
-(dolist (mode '(prog-mode-hook
-								))
+(dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (auto-fill-mode 1))))
 
 ;; insert a ruler for certain mode
 ;; (setq fci-rule-column 110)
-(dolist (mode '(prog-mode-hook
-								text-mode-hook
-								tex-mode-hook))
+(dolist (mode '(prog-mode-hook))
   (add-hook mode (lambda () (fci-mode 1))))
 
 ;; -----------------------------------------------------------------------------
@@ -394,6 +391,13 @@ size. This function also handles icons and modeline font sizes."
 ;; it messes up the init.el file after buffer evaluation, so use with caution
 (use-package dockerfile-mode
   :mode "Dockerfile\\'")
+
+;; -----------------------------------------------------------------------------
+;; configure markdown-mode, from https://github.com/KaratasFurkan/.emacs.d
+;; -----------------------------------------------------------------------------
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  :custom (markdown-header-scaling t))
 
 ;; -----------------------------------------------------------------------------
 ;; configure projectile, from emacs from scratch

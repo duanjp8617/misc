@@ -1,3 +1,25 @@
+;; -----------------------------------------------------------------------------
+;; Tune Garbage Collection from: https://github.com/KaratasFurkan/.emacs.d
+;; ----------------------------------------------------------------------------
+(setq gc-cons-threshold most-positive-fixnum)
+
+(defconst 1mb 1048576)
+(defconst 20mb 20971520)
+(defconst 30mb 31457280)
+(defconst 50mb 52428800)
+
+(defun fk/defer-garbage-collection ()
+  (setq gc-cons-threshold most-positive-fixnum))
+
+(defun fk/restore-garbage-collection ()
+  (run-at-time 1 nil (lambda () (setq gc-cons-threshold 30mb))))
+
+(add-hook 'emacs-startup-hook 'fk/restore-garbage-collection 100)
+(add-hook 'minibuffer-setup-hook 'fk/defer-garbage-collection)
+(add-hook 'minibuffer-exit-hook 'fk/restore-garbage-collection)
+
+(setq read-process-output-max 1mb)  ;; lsp-mode's performance suggest
+
 ;; -------------------------------------------------
 ;; configure emacs basic ui
 ;; -------------------------------------------------
@@ -316,6 +338,7 @@
 ;; configure treemacs
 ;; -------------------------------------------------
 ;; treemacs seems to be a better substitute for dired
+;; use "M-x treemacs-toggle-fixed-width" to unlock the ability to change window width
 (use-package treemacs
 	:ensure t
 	:config
@@ -324,6 +347,9 @@
 				  ([f5] . treemacs)
 				  ([f6] . treemacs-select-window)))
 
+;; fix a problem related with "Invalid image type 'svg'"
+;; see https://github.com/Alexander-Miller/treemacs/issues/1017
+(add-to-list 'image-types 'svg) 
 
 
 ;; -------------------------------------------------
