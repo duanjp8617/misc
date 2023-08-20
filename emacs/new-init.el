@@ -261,7 +261,7 @@ size. This function also handles icons and modeline font sizes."
 
 ;; insert a ruler for certain modes
 (dolist (mode '(prog-mode-hook))
-  (add-hook mode (lambda () (fci-mode 1))))
+  (add-hook mode (lambda () (display-fill-column-indicator-mode 1))))
 
 ;; enable auto-fill-mode for programming mode
 (dolist (mode '(prog-mode-hook))

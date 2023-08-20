@@ -5,6 +5,14 @@ FROM ubuntu:22.04
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
 RUN bash /scripts/update_apt_source.sh
 
+COPY scripts/install_emacs.sh /scripts/install_emacs.sh
+RUN bash /scripts/install_emacs.sh
+
+COPY scripts/install_fonts.sh /scripts/install_fonts.sh
+COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
+COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
+RUN bash /scripts/install_fonts.sh
+
 COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
 RUN bash /scripts/install_ssh_server.sh
 
@@ -14,9 +22,7 @@ RUN bash /scripts/setup_time_zone.sh
 COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
-# COPY scripts/setup_python_venv.sh /scripts/setup_python_env.sh
-# RUN bash /scripts/setup_python_env.sh
+EXPOSE 22
 
-# install python packages
-RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple \
-    pyright
+ENV TERM=xterm-256color
+ENTRYPOINT service ssh restart && bash
