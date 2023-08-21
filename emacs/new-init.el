@@ -14,8 +14,8 @@
 ;;                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 ;; You should be able to use require, yes, but only after running package-initialize
-;; (in Emacs≥27, this is done for you before the beginning of the .emacs file).
-(package-initialize) 
+;; (in Emacs≥27, this is done for you before the beginning of the .emacs file)
+(package-initialize)
 
 ;; refresh the archive contents defined in the 'package-archives
 (unless package-archive-contents
@@ -64,7 +64,7 @@
 ;; Resizing the Emacs frame can be a terribly expensive part of changing the
 ;; font. By inhibiting this, we easily halve startup times with fonts that are
 ;; larger than the system default.
-;; (setq frame-inhibit-implied-resize t)
+(setq frame-inhibit-implied-resize t)
 
 ;; -----------------------------------------------------------------------------
 ;; Better Defaults - General, from: https://github.com/KaratasFurkan/.emacs.d
@@ -83,7 +83,7 @@
   uniquify-buffer-name-style 'forward           ; non-unique buffer name display:
                                                 ; unique-part/non-unique-filename
   fast-but-imprecise-scrolling t                ; supposed to make scrolling faster zon hold
-  ;; window-resize-pixelwise t                  ; correctly resize windows by pixels (e.g. in split-window
+  window-resize-pixelwise t                     ; correctly resize windows by pixels (e.g. in split-window
                                                 ; functions)
   native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
   ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got
@@ -110,7 +110,10 @@
 (global-hl-line-mode)
 (blink-cursor-mode -1)
 
-(setq frame-title-format (list "%b (" user-login-name "@" system-name ")"))
+(setq-default
+  ;;truncate-lines t
+  frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
+  )
 
 ;; -----------------------------------------------------------------------------
 ;; configure emacs basic ui: from emacs from scratch

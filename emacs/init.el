@@ -228,7 +228,7 @@
 ;; -------------------------------------------------
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
+         ;; ("C-x b" . counsel-ibuffer)
 				 ;; the counsel-find-file defaults to the current dired
 				 ;; directory
          ("C-x C-f" . counsel-find-file)
@@ -339,17 +339,17 @@
 ;; -------------------------------------------------
 ;; treemacs seems to be a better substitute for dired
 ;; use "M-x treemacs-toggle-fixed-width" to unlock the ability to change window width
-(use-package treemacs
-	:ensure t
-	:config
-	(setq treemacs-is-never-other-window t)
-	:bind (:map global-map
-				  ([f5] . treemacs)
-				  ([f6] . treemacs-select-window)))
+;; (use-package treemacs
+;; 	:ensure t
+;; 	:config
+;; 	(setq treemacs-is-never-other-window t)
+;; 	:bind (:map global-map
+;; 				  ([f5] . treemacs)
+;; 				  ([f6] . treemacs-select-window)))
 
-;; fix a problem related with "Invalid image type 'svg'"
-;; see https://github.com/Alexander-Miller/treemacs/issues/1017
-(add-to-list 'image-types 'svg) 
+;; ;; fix a problem related with "Invalid image type 'svg'"
+;; ;; see https://github.com/Alexander-Miller/treemacs/issues/1017
+;; (add-to-list 'image-types 'svg) 
 
 
 ;; -------------------------------------------------
