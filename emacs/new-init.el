@@ -196,8 +196,8 @@ size. This function also handles icons and modeline font sizes."
 ;; disable transparency settings as I found it annoying
 ;; (set-frame-parameter (selected-frame) 'alpha '(90 . 90))
 ;; (add-to-list 'default-frame-alist '(alpha . (90 . 90)))
-(set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; -----------------------------------------------------------------------------
 ;; line numbers: from emacs from scratch
@@ -305,7 +305,6 @@ size. This function also handles icons and modeline font sizes."
   :ensure t)
 
 (use-package ivy
-  :diminish
   :bind (("C-s" . swiper)
          ;; we don't use evil mode, so default key binding is fine
          ;; :map ivy-minibuffer-map
@@ -375,7 +374,6 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 (use-package which-key
   :init (which-key-mode)
-  :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
 
@@ -417,7 +415,6 @@ size. This function also handles icons and modeline font sizes."
 ;; directory structure
 ;; 4. "C-c p f" finds files within the current project.
 (use-package projectile
-  :diminish projectile-mode
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
