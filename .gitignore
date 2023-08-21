@@ -1,4 +1,10 @@
 /tvm/files
 /tvm/tvm
 /docker/downloads
+
+# emacs backup file
 *~
+
+# emacs autosave file
+\#*\#
+.\#*
