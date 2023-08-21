@@ -64,16 +64,16 @@
 ;; Resizing the Emacs frame can be a terribly expensive part of changing the
 ;; font. By inhibiting this, we easily halve startup times with fonts that are
 ;; larger than the system default.
-(setq frame-inhibit-implied-resize t)
+;; (setq frame-inhibit-implied-resize t)
 
 ;; -----------------------------------------------------------------------------
 ;; Better Defaults - General, from: https://github.com/KaratasFurkan/.emacs.d
 ;; -----------------------------------------------------------------------------
 (setq-default
  ring-bell-function 'ignore                    ; prevent beep sound.
- inhibit-startup-screen t                      ; TODO: maybe better on early-init or performance?
- initial-major-mode 'fundamental-mode          ; TODO: maybe better on early-init or performance?
- initial-scratch-message nil                   ; TODO: maybe better on early-init?
+ ;; inhibit-startup-screen t                   ; TODO: maybe better on early-init or performance?
+ ;; initial-major-mode 'fundamental-mode       ; TODO: maybe better on early-init or performance?
+ ;; initial-scratch-message nil                ; TODO: maybe better on early-init?
  create-lockfiles nil                          ; .#locked-file-name
  confirm-kill-processes nil                    ; exit emacs without asking to kill processes
  backup-by-copying t                           ; prevent linked files
@@ -82,7 +82,7 @@
  revert-without-query '(".*")                  ; `revert-buffer' without confirmation
  uniquify-buffer-name-style 'forward           ; non-unique buffer name display: unique-part/non-unique-filename
  fast-but-imprecise-scrolling t                ; supposed to make scrolling faster on hold
- window-resize-pixelwise t                     ; correctly resize windows by pixels (e.g. in split-window
+ ;; window-resize-pixelwise t                  ; correctly resize windows by pixels (e.g. in split-window
 																							 ; functions)
  native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
  ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got
@@ -92,7 +92,7 @@
 (global-auto-revert-mode)                      ; keep buffers sync with the files on the disk
 (save-place-mode)                              ; When you visit a file, point goes to the last place where it
 																							 ; was when you previously visited the same file
-(global-so-long-mode)                          ; better handling files with long lines?
+;; (global-so-long-mode)                          ; better handling files with long lines?
 
 ;; -----------------------------------------------------------------------------
 ;; Set up a directory for storing backup files
@@ -108,7 +108,7 @@
 
 (setq-default
  ;;truncate-lines t
- frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
+ ;; frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
  frame-title-format '("Emacs | %b"))  ; Emacs | buffer-name
 
 ;; -----------------------------------------------------------------------------
@@ -130,7 +130,7 @@
 ;; decompress the file to ~/.fonts, and then update the fc-list with:
 ;; fc-cache -fv
 (defconst fk/default-font-family "FiraCode Nerd Font Mono")
-(defconst fk/default-font-size 90)
+(defconst fk/default-font-size 100)
 (defconst fk/default-icon-size 15)
 
 (defconst fk/variable-pitch-font-family "Noto Serif")
@@ -419,7 +419,7 @@ size. This function also handles icons and modeline font sizes."
   ;; NOTE: Set this to the folder where you keep your Git repos!
   ;; (when (file-directory-p "~/workspace")
 	;; 	(setq projectile-project-search-path '("~/workspace")))
-	(setq projectile-project-search-path '("~/"))
+	(setq projectile-project-search-path '("~/workspace"))
   ;; (setq projectile-switch-project-action #'projectile-dired)
 	)
 
@@ -470,6 +470,10 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 ;; configure treemacs
 ;; -----------------------------------------------------------------------------
+;; fix a problem related with "Invalid image type 'svg'"
+;; see https://github.com/Alexander-Miller/treemacs/issues/1017
+(add-to-list 'image-types 'svg) 
+
 ;; treemacs seems to be a better substitute for dired
 ;; use "M-x treemacs-toggle-fixed-width" to unlock the ability to change window width
 (use-package treemacs
@@ -479,11 +483,6 @@ size. This function also handles icons and modeline font sizes."
 	:bind (:map global-map
 				  ([f5] . treemacs)
 				  ([f6] . treemacs-select-window)))
-
-;; fix a problem related with "Invalid image type 'svg'"
-;; see https://github.com/Alexander-Miller/treemacs/issues/1017
-(add-to-list 'image-types 'svg) 
-
 
 ;; -----------------------------------------------------------------------------
 ;; lsp basic configurations, from emacs from scratch
