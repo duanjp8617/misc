@@ -70,29 +70,33 @@
 ;; Better Defaults - General, from: https://github.com/KaratasFurkan/.emacs.d
 ;; -----------------------------------------------------------------------------
 (setq-default
- ring-bell-function 'ignore                    ; prevent beep sound.
- ;; inhibit-startup-screen t                   ; TODO: maybe better on early-init or performance?
- ;; initial-major-mode 'fundamental-mode       ; TODO: maybe better on early-init or performance?
- ;; initial-scratch-message nil                ; TODO: maybe better on early-init?
- create-lockfiles nil                          ; .#locked-file-name
- confirm-kill-processes nil                    ; exit emacs without asking to kill processes
- backup-by-copying t                           ; prevent linked files
- require-final-newline t                       ; always end files with newline
- delete-old-versions t                         ; don't ask to delete old backup files
- revert-without-query '(".*")                  ; `revert-buffer' without confirmation
- uniquify-buffer-name-style 'forward           ; non-unique buffer name display: unique-part/non-unique-filename
- fast-but-imprecise-scrolling t                ; supposed to make scrolling faster on hold
- ;; window-resize-pixelwise t                  ; correctly resize windows by pixels (e.g. in split-window
-																							 ; functions)
- native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
- ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got
-																							 ; redefined" warnings
- use-short-answers t                           ; e.g. `y-or-n-p' instead of `yes-or-no-p'
- help-enable-symbol-autoload t)                ; perform autoload if docs are missing from autoload objects.
-(global-auto-revert-mode)                      ; keep buffers sync with the files on the disk
-(save-place-mode)                              ; When you visit a file, point goes to the last place where it
-																							 ; was when you previously visited the same file
-;; (global-so-long-mode)                          ; better handling files with long lines?
+  ring-bell-function 'ignore                    ; prevent beep sound.
+  ;; inhibit-startup-screen t                   ; TODO: maybe better on early-init or performance?
+  ;; initial-major-mode 'fundamental-mode       ; TODO: maybe better on early-init or performance?
+  ;; initial-scratch-message nil                ; TODO: maybe better on early-init?
+  create-lockfiles nil                          ; .#locked-file-name
+  confirm-kill-processes nil                    ; exit emacs without asking to kill processes
+  backup-by-copying t                           ; prevent linked files
+  require-final-newline t                       ; always end files with newline
+  delete-old-versions t                         ; don't ask to delete old backup files
+  revert-without-query '(".*")                  ; `revert-buffer' without confirmation
+  uniquify-buffer-name-style 'forward           ; non-unique buffer name display:
+                                                ; unique-part/non-unique-filename
+  fast-but-imprecise-scrolling t                ; supposed to make scrolling faster zon hold
+  ;; window-resize-pixelwise t                  ; correctly resize windows by pixels (e.g. in split-window
+                                                ; functions)
+  native-comp-async-report-warnings-errors nil  ; disable annoying native-comp warnings
+  ad-redefinition-action 'accept                ; disable annoying "ad-handle-definition: ‘some-function’ got
+                                                ; redefined" warnings
+  use-short-answers t                           ; e.g. `y-or-n-p' instead of `yes-or-no-p'
+  help-enable-symbol-autoload t)                ; perform autoload if docs are missing from autoload objects.
+
+(global-auto-revert-mode)                       ; keep buffers sync with the files on the disk
+
+(save-place-mode)                               ; When you visit a file, point goes to the last place where it
+                                                ; was when you previously visited the same file
+
+;; (global-so-long-mode)                        ; better handling files with long lines?
 
 ;; -----------------------------------------------------------------------------
 ;; Set up a directory for storing backup files
@@ -106,10 +110,7 @@
 (global-hl-line-mode)
 (blink-cursor-mode -1)
 
-(setq-default
- ;;truncate-lines t
- ;; frame-resize-pixelwise t             ; maximized emacs may not fit screen without this
- frame-title-format '("Emacs | %b"))  ; Emacs | buffer-name
+(setq frame-title-format (list "%b (" user-login-name "@" system-name ")"))
 
 ;; -----------------------------------------------------------------------------
 ;; configure emacs basic ui: from emacs from scratch
@@ -165,7 +166,7 @@ size. This function also handles icons and modeline font sizes."
       (company-box-icons-resize new-size)))
   ;; (when diff-hl-mode
   ;;   (diff-hl-maybe-redefine-bitmaps))
-	)
+  )
 
 (defun fk/increase-font-size ()
   "Increase font size by 0.5 (5 in height)."
@@ -203,10 +204,10 @@ size. This function also handles icons and modeline font sizes."
 
 ;; Override some modes which derive from the above
 (dolist (mode '(org-mode-hook
-								term-mode-hook
-								eshell-mode-hook
-							  shell-mode-hook
-								treemacs-mode-hook))
+                term-mode-hook
+                eshell-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; -----------------------------------------------------------------------------
@@ -235,7 +236,10 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 ;; Tab Width
 ;; -----------------------------------------------------------------------------
+;; use spaces instead of tabs
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+;; (setq indent-line-function 'insert-tab)
 
 ;; -----------------------------------------------------------------------------
 ;; configure tab-bar-mode
@@ -245,7 +249,7 @@ size. This function also handles icons and modeline font sizes."
 (setq tab-bar-new-tab-to 'rightmost)
 ;; hide tab buttons
 (setq tab-bar-close-button-show nil
-			 tab-bar-new-button-show nil)
+      tab-bar-new-button-show nil)
 ;; show tab numbers
 (setq tab-bar-tab-hints t)
 (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator))
@@ -300,9 +304,9 @@ size. This function also handles icons and modeline font sizes."
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
-				 ;; we don't use evil mode, so default key binding is fine
+         ;; we don't use evil mode, so default key binding is fine
          ;; :map ivy-minibuffer-map
-         ;; ("TAB" . ivy-alt-done)	
+         ;; ("TAB" . ivy-alt-done)
          ;; ("C-l" . ivy-alt-done)
          ;; ("C-j" . ivy-next-line)
          ;; ("C-k" . ivy-previous-line)
@@ -313,7 +317,7 @@ size. This function also handles icons and modeline font sizes."
          ;; :map ivy-reverse-i-search-map
          ;; ("C-k" . ivy-previous-line)
          ;; ("C-d" . ivy-reverse-i-search-kill)
-				 )
+         )
   :config
   (ivy-mode 1))
 
@@ -323,8 +327,8 @@ size. This function also handles icons and modeline font sizes."
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ;; ("C-x b" . counsel-ibuffer)
-				 ;; the counsel-find-file defaults to the current dired
-				 ;; directory
+         ;; the counsel-find-file defaults to the current dired
+         ;; directory
          ("C-x C-f" . counsel-find-file)
 				 ;; counsel-minibufer-history mapping does not work
          ;; :map minibuffer-local-map
@@ -458,14 +462,14 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 ;; configure dired-subtree
 ;; -----------------------------------------------------------------------------
-;; (use-package dired-subtree
-;; 	:ensure t
-;; 	:after dired
-;;   :custom (dired-subtree-use-backgrounds nil)
-;;   :bind (:map dired-mode-map
-;; 							("<tab>" . dired-subtree-toggle)
-;; 							("<C-tab>". dired-subtree-cycle)
-;; 							("<backtab>" . dired-subtree-remove)))
+(use-package dired-subtree
+  :ensure t
+  :after dired
+  :custom (dired-subtree-use-backgrounds nil)
+  :bind (:map dired-mode-map
+              ("<tab>" . dired-subtree-toggle)
+              ("<C-tab>". dired-subtree-cycle)
+              ("<backtab>" . dired-subtree-remove)))
 
 ;; -----------------------------------------------------------------------------
 ;; configure treemacs
@@ -477,12 +481,12 @@ size. This function also handles icons and modeline font sizes."
 ;; treemacs seems to be a better substitute for dired
 ;; use "M-x treemacs-toggle-fixed-width" to unlock the ability to change window width
 (use-package treemacs
-	:ensure t
-	:config
-	(setq treemacs-is-never-other-window t)
-	:bind (:map global-map
-				  ([f5] . treemacs)
-				  ([f6] . treemacs-select-window)))
+  :ensure t
+  :config
+  (setq treemacs-is-never-other-window t)
+  :bind (:map global-map
+              ([f5] . treemacs)
+              ([f6] . treemacs-select-window)))
 
 ;; -----------------------------------------------------------------------------
 ;; lsp basic configurations, from emacs from scratch
@@ -558,3 +562,8 @@ size. This function also handles icons and modeline font sizes."
 ;; 1. use "C-x d" to enter the dired-by-name mode
 ;; 2. when open a file, use "C-x C-j" to jump to the root directory owning this file in dire.
 ;; 3. in dire window, use "^" to go up one layer of directory
+
+;; -------------------------------------------------
+;; tips: whitespace-mode
+;; -------------------------------------------------
+;; 1. it can be use to check for tabs and whitespaces
