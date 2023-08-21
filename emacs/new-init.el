@@ -587,3 +587,9 @@ size. This function also handles icons and modeline font sizes."
 ;; tips: whitespace-mode
 ;; -------------------------------------------------
 ;; 1. it can be use to check for tabs and whitespaces
+
+;; -------------------------------------------------
+;; tips: tramp-mode
+;; -------------------------------------------------
+;; 1. double click "~" to switch to the local home buffer when finding file
+;; 2. it seems that tramp-mode over tunneled ssh is extremly slow
