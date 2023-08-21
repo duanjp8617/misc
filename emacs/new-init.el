@@ -471,8 +471,7 @@ size. This function also handles icons and modeline font sizes."
   :custom (dired-subtree-use-backgrounds nil)
   :bind (:map dired-mode-map
               ("<tab>" . dired-subtree-toggle)
-              ("<C-tab>". dired-subtree-cycle)
-              ("<backtab>" . dired-subtree-remove)))
+              ("<C-tab>". dired-subtree-cycle)))
 
 ;; -----------------------------------------------------------------------------
 ;; configure treemacs
@@ -517,6 +516,10 @@ size. This function also handles icons and modeline font sizes."
 ;; use lsp-ivy
 (use-package lsp-ivy)
 
+;; use lsp-treemacs
+(use-package lsp-treemacs
+  :after lsp)
+
 ;; auto-completion with company
 (use-package company
   :after lsp-mode
@@ -532,6 +535,23 @@ size. This function also handles icons and modeline font sizes."
 ;; use company-box to improve the ui of the company pop-up
 (use-package company-box
   :hook (company-mode . company-box-mode))
+
+;; -----------------------------------------------------------------------------
+;; python-mode configuration, from emacs from scratch
+;; -----------------------------------------------------------------------------
+;; it works, but not perfect, I should continue to work on it to make it working more smoothly
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python")
+  ;; (dap-python-executable "python3")
+  ;; (dap-python-debugger 'debugpy)
+  ;; :config
+  ;; (require 'dap-python))
+  )
+
 
 ;; -------------------------------------------------
 ;; tips: open multiple shells
