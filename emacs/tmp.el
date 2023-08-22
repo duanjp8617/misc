@@ -529,27 +529,16 @@ size. This function also handles icons and modeline font sizes."
   :hook (company-mode . company-box-mode))
 
 ;; -----------------------------------------------------------------------------
-;; python-mode configuration, from emacs from scratch
+;; python-mode configuration
 ;; -----------------------------------------------------------------------------
-;; it works, but not perfect, I should continue to work on it to make it working more smoothly
-;; (use-package python-mode
-;;   :ensure t
-;;   :hook (python-mode . lsp-deferred)
-;;   :custom
-;;   ;; NOTE: Set these if Python 3 is called "python3" on your system!
-;;   (python-shell-interpreter "python")
-;;   ;; (dap-python-executable "python3")
-;;   ;; (dap-python-debugger 'debugpy)
-;;   ;; :config
-;;   ;; (require 'dap-python))
-;;   )
-
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp-deferred))))  ; or lsp-deferred
-
+;; for auto-formatting
+(use-package py-autopep8
+  :hook ((python-mode) . py-autopep8-mode))
 
 ;; -------------------------------------------------
 ;; tips: open multiple shells
