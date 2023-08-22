@@ -518,8 +518,6 @@ size. This function also handles icons and modeline font sizes."
   :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
          ("<tab>" . company-complete-selection))
-        ;; (:map lsp-mode-map
-        ;;  ("<tab>" . company-indent-or-complete-common))
   :custom
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
@@ -535,7 +533,9 @@ size. This function also handles icons and modeline font sizes."
   :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
-                          (lsp-deferred))))  ; or lsp-deferred
+                          (lsp-deferred)
+                          (setq python-indent-offset 4)
+                          ))) 
 ;; for auto-formatting
 (use-package py-autopep8
   :hook ((python-mode) . py-autopep8-mode))

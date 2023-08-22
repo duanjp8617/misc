@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# A basic python development with pyright as the language server
+# The installed python version can be adjusted in install_python.sh
+
 FROM ubuntu:22.04
 
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
