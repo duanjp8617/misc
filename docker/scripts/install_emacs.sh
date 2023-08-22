@@ -16,6 +16,7 @@ apt install -y \
   libncurses-dev \
   libgnutls28-dev \
   libjansson-dev \
+  libgccjit-11-dev \
   wget \
   ripgrep \
   git \
