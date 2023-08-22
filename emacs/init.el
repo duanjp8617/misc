@@ -300,9 +300,17 @@ size. This function also handles icons and modeline font sizes."
 ;; -----------------------------------------------------------------------------
 ;; set up ivy completion engine, from emacs from scratch
 ;; -----------------------------------------------------------------------------
-;; ivy and swipper are part of counsel, so we install counsel here first
 (use-package counsel
-  :ensure t)
+  :bind (("M-x" . counsel-M-x)
+         ("C-x b" . ivy-switch-buffer)
+         ("M-y" . counsel-yank-pop)
+         ;; the counsel-find-file defaults to the current dired
+         ;; directory
+         ("C-x C-f" . counsel-find-file)
+				 ;; counsel-minibufer-history mapping does not work
+         ;; :map minibuffer-local-map
+         ;; ("C-r" . 'counsel-minibuffer-history)
+	))
 
 (use-package ivy
   :bind (("C-s" . swiper)
@@ -322,20 +330,6 @@ size. This function also handles icons and modeline font sizes."
          )
   :config
   (ivy-mode 1))
-
-;; -----------------------------------------------------------------------------
-;; configure counsel, from emacs from scratch
-;; -----------------------------------------------------------------------------
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ;; ("C-x b" . counsel-ibuffer)
-         ;; the counsel-find-file defaults to the current dired
-         ;; directory
-         ("C-x C-f" . counsel-find-file)
-				 ;; counsel-minibufer-history mapping does not work
-         ;; :map minibuffer-local-map
-         ;; ("C-r" . 'counsel-minibuffer-history)
-	))
 
 ;; -----------------------------------------------------------------------------
 ;; enable ivy-rich, from emacs from scratch
