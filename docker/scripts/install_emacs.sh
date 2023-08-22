@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# ripgrep for projectile rg search
-# git for magit
+# install emacs dependency libraries
 apt install -y \
   build-essential \
   texinfo \
@@ -17,9 +16,15 @@ apt install -y \
   libgnutls28-dev \
   libjansson-dev \
   libgccjit-11-dev \
+
+# ripgrep for projectile rg search
+# git for magit
+# jq for json format with flycheck
+apt install -y \
   wget \
   ripgrep \
   git \
+  jq
 
 wget http://mirrors.ustc.edu.cn/gnu/emacs/emacs-28.2.tar.gz
 tar xvzf emacs-28.2.tar.gz
