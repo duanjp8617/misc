@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# ripgrep for projectile rg search
+# git for magit
 apt install -y \
   build-essential \
   texinfo \
@@ -13,7 +15,9 @@ apt install -y \
   libcanberra-gtk3-module \
   libncurses-dev \
   libgnutls28-dev \
-  wget
+  wget \
+  ripgrep \
+  git \ 
 
 wget http://mirrors.ustc.edu.cn/gnu/emacs/emacs-28.2.tar.gz
 tar xvzf emacs-28.2.tar.gz
