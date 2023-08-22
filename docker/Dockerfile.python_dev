@@ -25,4 +25,6 @@ RUN bash /scripts/install_python.sh
 EXPOSE 22
 
 ENV TERM=xterm-256color
+ENV LSP_USE_PLISTS=true
+
 ENTRYPOINT service ssh restart && bash
