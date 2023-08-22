@@ -507,9 +507,10 @@ size. This function also handles icons and modeline font sizes."
 ;; use lsp-ivy
 (use-package lsp-ivy)
 
-;; use lsp-treemacs
-(use-package lsp-treemacs
-  :after lsp)
+;; use flycheck
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 ;; auto-completion with company
 (use-package company
@@ -517,8 +518,8 @@ size. This function also handles icons and modeline font sizes."
   :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
          ("<tab>" . company-complete-selection))
-        (:map lsp-mode-map
-         ("<tab>" . company-indent-or-complete-common))
+        ;; (:map lsp-mode-map
+        ;;  ("<tab>" . company-indent-or-complete-common))
   :custom
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
