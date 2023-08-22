@@ -22,6 +22,15 @@ RUN bash /scripts/setup_time_zone.sh
 COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
+ARG VERSION=v20.5.1
+COPY downloads/node-$VERSION-linux-x64.tar.xz /scripts/node-$VERSION-linux-x64.tar.xz
+COPY scripts/install_node.sh /scripts/install_node.sh
+RUN bash /scripts/install_node.sh
+
+# install necesary packages
+RUN npm --registry https://registry.npmmirror.com install -g pyright
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple autopep8
+
 EXPOSE 22
 
 ENV TERM=xterm-256color
