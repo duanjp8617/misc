@@ -15,14 +15,15 @@ apt install -y \
   libcanberra-gtk3-module \
   libncurses-dev \
   libgnutls28-dev \
+  libjansson-dev \
   wget \
   ripgrep \
-  git \ 
+  git \
 
 wget http://mirrors.ustc.edu.cn/gnu/emacs/emacs-28.2.tar.gz
 tar xvzf emacs-28.2.tar.gz
 
 cd emacs-28.2
-./configure
+./configure --with-json --with-native-compilation
 make -j
 make install
