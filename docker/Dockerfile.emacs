@@ -1,3 +1,5 @@
+# A emacs 28.2 container
+
 FROM ubuntu:22.04
 
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
@@ -16,9 +18,7 @@ COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
 RUN bash /scripts/install_ssh_server.sh
 
 EXPOSE 22
-
 ENV TERM=xterm-256color
-ENV LSP_USE_PLISTS=true
 
 ENTRYPOINT service ssh restart && bash
 

@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# A basic python development with pyright as the language server
-# The installed python version can be adjusted in install_python.sh
+# A basic python development 
 
 FROM ubuntu:22.04
 
@@ -18,8 +15,6 @@ COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
 EXPOSE 22
-
 ENV TERM=xterm-256color
-ENV LSP_USE_PLISTS=true
 
 ENTRYPOINT service ssh restart && bash

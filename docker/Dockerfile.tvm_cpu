@@ -1,5 +1,3 @@
-#!/bin/bash
-
 FROM ubuntu:22.04
 
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
@@ -72,8 +70,6 @@ RUN apt-get install -y \
     llvm-14 clang-14 libclang-14-dev clangd-14
 
 EXPOSE 22
-
 ENV TERM=xterm-256color
-ENV LSP_USE_PLISTS=true
 
 ENTRYPOINT service ssh restart && bash
