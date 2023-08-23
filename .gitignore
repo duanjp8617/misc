@@ -1,6 +1,10 @@
 /tvm/files
 /tvm/tvm
-/docker/downloads
+
+/docker/downloads/*
+!/docker/downloads/*.sh
+
+
 
 # emacs backup file
 *~

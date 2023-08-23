@@ -1,5 +1,8 @@
 # A emacs 28.2 container
 
+# 1. switch to ./downloads, execute download_fonts.sh
+# 2. sudo docker build -f Dockerfile.emacs -t <tag:version> .
+
 FROM ubuntu:22.04
 
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh

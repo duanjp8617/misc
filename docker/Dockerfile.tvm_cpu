@@ -1,3 +1,7 @@
+# A basic tvm development container for CPU
+
+# 1. sudo docker build -f Dockerfile.tvm_cpu -t <tag:version> .
+
 FROM ubuntu:22.04
 
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh

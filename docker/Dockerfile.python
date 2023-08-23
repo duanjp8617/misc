@@ -1,4 +1,6 @@
-# A basic python development 
+# A basic python development container
+
+# 1. sudo docker build -f Dockerfile.python -t <tag:version> .
 
 FROM ubuntu:22.04
 
