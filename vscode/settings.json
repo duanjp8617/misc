@@ -16,5 +16,8 @@
     "clangd.path": "/usr/bin/clangd-14",
     "[cpp]": {
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
-    }
+    },
+
+    // configure vertical workbench scroll 
+    "workbench.list.horizontalScrolling": true
 }
