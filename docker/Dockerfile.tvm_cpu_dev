@@ -1,0 +1,79 @@
+#!/bin/bash
+
+FROM ubuntu:22.04
+
+COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
+RUN bash /scripts/update_apt_source.sh
+
+COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
+RUN bash /scripts/install_ssh_server.sh
+
+COPY scripts/setup_time_zone.sh /scripts/setup_time_zone.sh
+RUN bash /scripts/setup_time_zone.sh
+
+COPY scripts/install_python.sh /scripts/install_python.sh
+RUN bash /scripts/install_python.sh
+
+# install core packages
+RUN apt-get -y --no-install-recommends install \
+    apt-transport-https \
+    curl \
+    g++ \
+    gdb \
+    git \
+    graphviz \
+    libcurl4-openssl-dev \
+    libopenblas-dev \
+    libssl-dev \
+    libtinfo-dev \
+    libz-dev \
+    lsb-core \
+    make \
+    ninja-build \
+    parallel \
+    pkg-config \
+    sudo \
+    unzip \
+    wget \
+    cmake \ 
+    vim \
+    && apt-get clean
+
+# install python packages
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+    "Pygments>=2.4.0" \
+    attrs \
+    cloudpickle \
+    cython \
+    decorator \
+    mypy \
+    numpy==1.21.* \
+    orderedset \
+    packaging \
+    Pillow==9.1.0 \
+    psutil \
+    pytest \
+    pytest-profiling \
+    pytest-xdist \
+    pytest-rerunfailures==10.2 \
+    requests \
+    scipy \
+    Jinja2 \
+    junitparser==2.4.2 \
+    six \
+    tornado \
+    pytest-lazy-fixture \
+    ml_dtypes \
+    onnx \
+    onnxoptimizer
+
+# install llvm and clang
+RUN apt-get install -y \
+    llvm-14 clang-14 libclang-14-dev clangd-14
+
+EXPOSE 22
+
+ENV TERM=xterm-256color
+ENV LSP_USE_PLISTS=true
+
+ENTRYPOINT service ssh restart && bash
