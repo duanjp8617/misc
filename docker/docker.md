@@ -1,4 +1,8 @@
-# 1. Configure Docker
+# Directory Desription
+
+This directory (`docker`) contains docker build files for my development environments.
+
+# Configure Docker
 
 ## 安装docker及下载docker镜像
 
