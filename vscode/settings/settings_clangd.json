@@ -1,4 +1,5 @@
 {
+    // clangd configuration
     "clangd.arguments": [
         "--background-index",
         "--compile-commands-dir=build",
@@ -16,17 +17,33 @@
     "[cpp]": {
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
+    
     // the following changes the color of the C++ comments, including the 
     // the doxygen tags inside the comments
+    // toggle "Developer: Inspect Editor Tokens and Scopes" to check the color 
     "editor.tokenColorCustomizations": {
-        "comments": "#94928f",
+        // "comments": "#8d8c8c",
         "textMateRules": [
             {
                 "scope": "storage.type.class.doxygen",
                 "settings": {
-                    "foreground": "#94928f"
+                    "foreground": "#6A9955"
+                }
+            },
+            {
+                "scope": "variable.parameter.cpp,comment.block.documentation.cpp",
+                "settings": {
+                    "foreground": "#6A9955"
                 }
             }
         ]
     },
+    
+    // the following configuration highlight the current line being edited under 
+    // a light theme
+    // "workbench.colorCustomizations": {
+    //     "editor.lineHighlightBackground": "#e9f2fa",
+    //     "editor.lineHighlightBorder": "#9292ac",
+    //     "editorInlayHint.background": "#0dbf8d92",
+    // },    
 }

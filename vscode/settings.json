@@ -1,0 +1,20 @@
+{
+    // clangd configuration
+    "clangd.arguments": [
+        "--background-index",
+        "--compile-commands-dir=build",
+        "-j=12",
+        // "--folding-ranges",
+        // "--query-driver=/usr/bin/clang++",
+        // "--clang-tidy",
+        "--all-scopes-completion",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--header-insertion=iwyu"
+        // "--pch-storage=disk",
+    ],
+    "clangd.path": "/usr/bin/clangd-14",
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    }
+}
