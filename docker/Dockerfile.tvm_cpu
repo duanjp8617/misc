@@ -16,6 +16,9 @@ RUN bash /scripts/setup_time_zone.sh
 COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
+# sync downloads folder
+COPY downloads/* /downloads
+
 # install core packages
 RUN apt-get -y --no-install-recommends install \
     apt-transport-https \

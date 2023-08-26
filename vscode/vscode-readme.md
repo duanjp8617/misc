@@ -16,11 +16,9 @@ I think the following themes are good candidates:
 4. WSL
 
 ## Extentions that are installed remotely:
-
 1. clangd
-2. pylance
+2. python and pylance (pylance will be automatically installed if you install python)
 3. rust-analyzer
-4. edamagit
 
 # C++ Theme Color Configuration
 
@@ -54,6 +52,8 @@ I think the following themes are good candidates:
 ## Go Back
 
 Currently, I map `Go Back` to `F11`.
+
+# Extention Installation
 
 # Install extention manually
 
