@@ -80,8 +80,13 @@ RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
 RUN apt-get install -y \
     llvm-14 clang-14 libclang-14-dev clangd-14
 
-# sync downloads folder
+# Manual installation of vscode server and extensions
 COPY downloads/ /downloads/
+WORKDIR /downloads
+RUN ./install_vscode_server.sh
+RUN ./install_vscode_extension.sh python
+RUN ./install_vscode_extension.sh vscode-pylance
+RUN ./install_vscode_extension.sh vscode-clangd
 
 EXPOSE 22
 

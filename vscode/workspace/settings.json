@@ -18,6 +18,21 @@
         "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
 
-    // configure vertical workbench scroll 
-    "workbench.list.horizontalScrolling": true
+    // configure cpp comment color
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "storage.type.class.doxygen",
+                "settings": {
+                    "foreground": "#6A9955"
+                }
+            },
+            {
+                "scope": "variable.parameter.cpp,comment.block.documentation.cpp",
+                "settings": {
+                    "foreground": "#6A9955"
+                }
+            }
+        ]
+    }
 }
