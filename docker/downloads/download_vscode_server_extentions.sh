@@ -15,29 +15,17 @@ if [ ! -f "./vscode-server-linux-x64.tar.gz" ]; then
 fi
 
 # Clangd extention
-if [ ! -f "./vscode-clangd.vsix" ]; then
-  rm -f ./vscode-clangd.vsix.gz
-  wget -O ./vscode-clangd.vsix.gz https://marketplace.visualstudio.com/_apis/public/gallery/publishers/llvm-vs-code-extensions/vsextensions/vscode-clangd/0.1.24/vspackage
-  gunzip -v ./vscode-clangd.vsix.gz
-fi
+CLANGD=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/llvm-vs-code-extensions/vsextensions/vscode-clangd/0.1.24/vspackage
+./download_extention_from_market_place.sh $CLANGD vscode-clangd
 
 # Rust analyzer extention
-if [ ! -f "./rust-analyzer.vsix" ]; then
-  rm -f ./rust-analyzer.vsix.gz
-  wget -O ./rust-analyzer.vsix.gz https://marketplace.visualstudio.com/_apis/public/gallery/publishers/rust-lang/vsextensions/rust-analyzer/0.4.1634/vspackage?targetPlatform=linux-x64
-  gunzip -v ./rust-analyzer.vsix.gz
-fi
+RUST=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/rust-lang/vsextensions/rust-analyzer/0.4.1634/vspackage?targetPlatform=linux-x64
+./download_extention_from_market_place.sh $RUST rust-analyzer
 
 # Pylance extention
-if [ ! -f "./pylance.vsix" ]; then
-  rm -f ./pylance.vsix.gz
-  wget -O ./pylance.vsix.gz https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/vscode-pylance/2023.8.41/vspackage
-  gunzip -v ./pylance.vsix.gz
-fi
+PYLANCE=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/vscode-pylance/2023.8.40/vspackage
+./download_extention_from_market_place.sh $PYLANCE vscode-pylance
 
-# Python extention, For pylance v2023.8.41 is compatible with python v2023.14.0
-if [ ! -f "./python.vsix" ]; then
-  rm -f ./python.vsix.gz
-  wget -O ./python.vsix.gz https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/2023.14.0/vspackage
-  gunzip -v ./python.vsix.gz
-fi
+# Python extention, For pylance v2023.8.40 is compatible with python v2023.14.0
+PYTHON=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/2023.14.0/vspackage
+./download_extention_from_market_place.sh $PYTHON python
