@@ -1,18 +1,38 @@
 {
-    // configure vertical workbench scroll 
-    "workbench.list.horizontalScrolling": true,
-
-    // configure workbench theme
-    "workbench.colorTheme": "Quiet Light",
-
-    // line wrap and ruler
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.rulers": [
-      120,140
-    ],
-    "editor.wordWrapColumn": 140,
-
-    // code and extension update
-    "update.mode": "start",
-    "extensions.autoCheckUpdates": false
+  // configure vertical workbench scroll 
+  "workbench.list.horizontalScrolling": true,
+  
+  // configure workbench theme
+  "workbench.colorTheme": "Quiet Light",
+  
+  // line wrap and ruler
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.rulers": [
+    120,
+    140
+  ],
+  "editor.wordWrapColumn": 140,
+  
+  // code and extension update
+  "update.mode": "start",
+  "extensions.autoCheckUpdates": false,
+  "extensions.ignoreRecommendations": true,
+  
+  // latex workshop setting
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-shell-escape",
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-outdir=%OUTDIR%",
+        "%DOC%"
+      ],
+      "env": {}
+    }
+  ]
 }
