@@ -88,6 +88,13 @@ RUN ./install_vscode_extension.sh python
 RUN ./install_vscode_extension.sh vscode-pylance
 RUN ./install_vscode_extension.sh vscode-clangd
 
+# install pytorch dependencies according to:
+# https://tvm.apache.org/docs/how_to/compile_models/from_pytorch.html#sphx-glr-how-to-compile-models-from-pytorch-py
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade \
+    torch==1.7.1 \ 
+    torchvision==0.8.2 \
+    matplotlib
+
 EXPOSE 22
 
 RUN echo 'export TVM_HOME=/root/tvm' >> /root/.bashrc
