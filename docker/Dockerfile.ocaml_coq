@@ -1,0 +1,22 @@
+FROM ubuntu:22.04
+
+COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
+RUN bash /scripts/update_apt_source.sh
+
+RUN apt-get -y --no-install-recommends install \
+    gcc \
+    build-essential \
+    curl \
+    unzip \
+    bubblewrap \
+    git \
+    libgmp-dev
+
+ARG OPAM_BIN=opam-2.1.5-x86_64-linux
+COPY downloads/$OPAM_BIN /scripts
+RUN install -m 755 /scripts/$OPAM_BIN /usr/local/bin/opam
+
+RUN opam init --disable-sandboxing --shell-setup
+RUN opam switch create 4.14.0
+RUN opam install -y menhir dune merlin ocaml-lsp-server odoc ocamlformat utop dune-release
+RUN opam pin add -y coq 8.17.1
