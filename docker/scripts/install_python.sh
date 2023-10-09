@@ -8,7 +8,7 @@ gpg --homedir /tmp --no-default-keyring --keyring /usr/share/keyrings/deadsnakes
 # add deadsnakes apt source
 echo "deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://launchpad.proxy.ustclug.org/deadsnakes/ppa/ubuntu/ jammy main" >> /etc/apt/sources.list.d/deadsnakes-ubuntu-ppa-jammy.list
 
-PYTHON_VERSION=3.8
+# need a environment variable PYTHON_VERSION=3.8 to indicate the installed python version
 apt-get update \
   && apt-get install -y \
      acl \

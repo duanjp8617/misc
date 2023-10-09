@@ -16,6 +16,7 @@ RUN bash /scripts/install_ssh_server.sh
 COPY scripts/setup_time_zone.sh /scripts/setup_time_zone.sh
 RUN bash /scripts/setup_time_zone.sh
 
+ENV PYTHON_VERSION=3.8
 COPY scripts/install_python.sh /scripts/install_python.sh
 RUN bash /scripts/install_python.sh
 
