@@ -45,8 +45,14 @@
 
 
 
+;; (defconst fk/default-font-family "FiraCode Nerd Font Mono")
 (defconst fk/default-font-size 100)
 (defconst fk/default-icon-size 15)
+
+;; (custom-set-faces
+;;  `(default ((t (:family ,fk/default-font-family :height ,fk/default-font-size))))
+;;  ;; Characters with fixed pitch face do not shown when height is 90.
+;;  `(fixed-pitch-serif ((t (:height 1.2)))))
 
 (defun fk/adjust-font-size (height)
   "Adjust font size by given height. If height is '0', reset font
@@ -114,6 +120,13 @@ size. This function also handles icons and modeline font sizes."
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (show-paren-mode 1))
 
+(use-package doom-themes
+  :init (load-theme 'doom-dracula t))
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init (doom-modeline-mode 1)
+;;   :custom ((doom-modeline-height 25)))
+
 
 
 (use-package counsel
@@ -140,8 +153,9 @@ size. This function also handles icons and modeline font sizes."
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-project-search-path '("~/workspace")))
+  ;; :init
+  ;; (setq projectile-project-search-path '("/root"))
+  )
 
 ;; -----------------------------------------------------------------------------
 ;; configure counsel-projectile, from emacs from scratch
@@ -171,3 +185,16 @@ size. This function also handles icons and modeline font sizes."
   :bind (:map dired-mode-map
               ("<tab>" . dired-subtree-toggle)
               ("<C-tab>". dired-subtree-cycle)))
+
+
+;; load tuareg and merlin site files
+;; The prefix prior to "/emacs/site-lisp" is generated with "opam var share"
+(push "/root/.opam/4.14.0/share/emacs/site-lisp" load-path)
+(load "/root/.opam/4.14.0/share/emacs/site-lisp/tuareg-site-file")
+(autoload 'merlin-mode "merlin" "Merlin mode" t)
+(add-hook 'tuareg-mode-hook #'merlin-mode)
+(add-hook 'caml-mode-hook #'merlin-mode)
+
+
+
+

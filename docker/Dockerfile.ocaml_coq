@@ -1,23 +1,43 @@
 FROM ubuntu:22.04
 
+RUN apt update
+RUN apt install -y ca-certificates 
+
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
 RUN bash /scripts/update_apt_source.sh
 
-RUN apt-get -y --no-install-recommends install \
-    gcc \
-    build-essential \
-    curl \
-    unzip \
-    bubblewrap \
-    git \
-    libgmp-dev
+COPY scripts/install_emacs.sh /scripts/install_emacs.sh
+RUN bash /scripts/install_emacs.sh
 
-ARG OPAM_BIN=opam-2.1.5-x86_64-linux
+ENV OPAM_BIN=opam-2.1.5-x86_64-linux
 COPY downloads/$OPAM_BIN /scripts
-RUN install -m 755 /scripts/$OPAM_BIN /usr/local/bin/opam
+COPY scripts/install_ocaml_coq.sh /scripts/install_ocaml_coq.sh
+WORKDIR /scripts
+RUN bash /scripts/install_ocaml_coq.sh
 
-RUN opam init --disable-sandboxing --dot-profile=~/.bashrc --shell-setup
-RUN opam switch create 4.14.0
-RUN opam install -y menhir dune merlin ocaml-lsp-server odoc ocamlformat utop dune-release
-RUN opam pin add -y coq 8.16.1
+COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
+RUN bash /scripts/install_ssh_server.sh
 
+EXPOSE 22
+ENV TERM=xterm-256color
+
+ENTRYPOINT service ssh restart && bash
+
+RUN apt install -y rsync
+
+COPY scripts/install_fonts.sh /scripts/install_fonts.sh
+COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
+COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
+RUN bash /scripts/install_fonts.sh
+
+COPY downloads/ /downloads/
+WORKDIR /downloads
+RUN ./install_vscode_server.sh
+RUN ./install_vscode_extension.sh ocaml-platform
+
+WORKDIR /root
+
+# Create a contaienr with "docker run -it --rm -p 23:22 <container_image>"
+# Then from wsl, use the following command to connect to the container
+# "ssh -X root@localhost -p 23"
+# Then we can open emacs with X11 forwarding

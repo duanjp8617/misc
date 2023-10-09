@@ -441,6 +441,7 @@ size. This function also handles icons and modeline font sizes."
 ;; but it can take some time before I can figure it out.
 ;; Also, doing git in china is a pain in the butt, so I might need to mix
 ;; the workflow of magit with shell command (which can bypass firewalls with proxies).
+;; C-x g (magit-status) to invoke the magit operation window
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))

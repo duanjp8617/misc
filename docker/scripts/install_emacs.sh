@@ -15,7 +15,7 @@ apt install -y \
   libncurses-dev \
   libgnutls28-dev \
   libjansson-dev \
-  libgccjit-11-dev \
+  libgccjit-11-dev
 
 # ripgrep for projectile rg search
 # git for magit

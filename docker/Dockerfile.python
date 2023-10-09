@@ -4,6 +4,9 @@
 
 FROM ubuntu:22.04
 
+RUN apt update
+RUN apt install -y ca-certificates 
+
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
 RUN bash /scripts/update_apt_source.sh
 

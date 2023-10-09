@@ -1,6 +1,18 @@
 #!/bin/bash
 
-INSTALLER_DIR=/scripts
+apt-get -y --no-install-recommends install \
+    gcc \
+    build-essential \
+    curl \
+    unzip \
+    bubblewrap \
+    git \
+    libgmp-dev
 
-sh -c $INSTALLER_DIR/opam_installer
+install -m 755 ./$OPAM_BIN /usr/local/bin/opam
+
+opam init --disable-sandboxing --dot-profile=~/.bashrc --shell-setup
+opam switch create 4.14.0
+opam install -y --assume-depexts menhir dune merlin ocaml-lsp-server odoc ocamlformat utop dune-release tuareg
+opam pin add -y coq 8.16.1
 

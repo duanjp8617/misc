@@ -6,10 +6,10 @@
 
 # vscode commit version shown by the command: `code --version`:
 # A sample output:
-# 1.81.1
-# 6c3e3dba23e8fadc360aed75ce363ba185c49794
+# 1.82.2
+# abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
 # x64
-VSCODE_COMMIT=6c3e3dba23e8fadc360aed75ce363ba185c49794
+VSCODE_COMMIT=abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
 if [ ! -f "./vscode-server-linux-x64.tar.gz" ]; then
   wget -O ./vscode-server-linux-x64.tar.gz https://update.code.visualstudio.com/commit:${VSCODE_COMMIT}/server-linux-x64/stable
 fi
@@ -29,3 +29,8 @@ PYLANCE=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-
 # Python extention, For pylance v2023.8.40 is compatible with python v2023.14.0
 PYTHON=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/python/2023.14.0/vspackage
 ./download_extention_from_market_place.sh $PYTHON python
+
+# OCaml Platform
+OCAML=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ocamllabs/vsextensions/ocaml-platform/1.13.1/vspackage
+./download_extention_from_market_place.sh $OCAML ocaml-platform
+
