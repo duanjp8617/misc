@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# need a VERSION environment variable that matches the downloaded node version
+# need environment variable VERSION=v20.5.1 that matches the one downloaded by 
+# the "download_node.sh" script
 
 tar -xvf ./node-$VERSION-linux-x64.tar.xz
 cp -r ./node-$VERSION-linux-x64/node-$VERSION-linux-x64/lib /usr

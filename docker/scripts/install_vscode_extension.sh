@@ -16,6 +16,11 @@ if [ ! -d "$HOME/.vscode-server/extensions" ]; then
   mkdir -p $HOME/.vscode-server/extensions
 fi
 
+if ! command -v unzip &> /dev/null
+then
+    apt install -y unzip
+fi
+
 unzip -d $1_tmp $1
 mv $1_tmp/extension.vsixmanifest $1_tmp/extension/.vsixmanifest
 mv $1_tmp/extension $HOME/.vscode-server/extensions/$1
