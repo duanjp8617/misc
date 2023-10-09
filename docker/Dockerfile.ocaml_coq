@@ -15,13 +15,13 @@ RUN bash /scripts/install_ocaml_coq.sh
 ENV VSCODE_COMMIT=e7e037083ff4455cf320e344325dacb480062c3c
 COPY downloads/vscode-server-linux-x64.tar.gz /scripts
 COPY downloads/ocaml-platform /scripts
-COPY downloads/coq-lsp /scripts
+# COPY downloads/coq-lsp /scripts
 COPY /scripts/install_vscode_server.sh /scripts
 COPY /scripts/install_vscode_extension.sh /scripts
 WORKDIR /scripts
 RUN bash /scripts/install_vscode_server.sh
 RUN bash /scripts/install_vscode_extension.sh ocaml-platform 
-RUN bash /scripts/install_vscode_extension.sh coq-lsp 
+# RUN bash /scripts/install_vscode_extension.sh coq-lsp 
 
 COPY scripts/install_emacs.sh /scripts/install_emacs.sh
 RUN bash /scripts/install_emacs.sh
