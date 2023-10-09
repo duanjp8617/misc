@@ -23,6 +23,15 @@ RUN bash /scripts/install_vscode_server.sh
 RUN bash /scripts/install_vscode_extension.sh ocaml-platform 
 RUN bash /scripts/install_vscode_extension.sh coq-lsp 
 
+COPY scripts/install_emacs.sh /scripts/install_emacs.sh
+RUN bash /scripts/install_emacs.sh
+
+COPY scripts/install_fonts.sh /scripts/install_fonts.sh
+COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
+COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
+WORKDIR /scripts
+RUN bash /scripts/install_fonts.sh
+
 COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
 RUN bash /scripts/install_ssh_server.sh
 

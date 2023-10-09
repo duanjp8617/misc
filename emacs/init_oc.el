@@ -136,6 +136,7 @@ size. This function also handles icons and modeline font sizes."
          ("C-x C-f" . counsel-find-file)))
 
 (use-package ivy
+  :diminish
   :bind (("C-s" . swiper))
   :config
   (ivy-mode 1))
@@ -144,11 +145,13 @@ size. This function also handles icons and modeline font sizes."
 	(ivy-rich-mode 1))
 
 (use-package which-key
+  :diminish
   :init (which-key-mode)
   :config
   (setq which-key-idle-delay 1))
 
 (use-package projectile
+  :diminish
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
@@ -189,12 +192,15 @@ size. This function also handles icons and modeline font sizes."
 
 ;; load tuareg and merlin site files
 ;; The prefix prior to "/emacs/site-lisp" is generated with "opam var share"
-(push "/root/.opam/4.14.0/share/emacs/site-lisp" load-path)
-(load "/root/.opam/4.14.0/share/emacs/site-lisp/tuareg-site-file")
-(autoload 'merlin-mode "merlin" "Merlin mode" t)
-(add-hook 'tuareg-mode-hook #'merlin-mode)
-(add-hook 'caml-mode-hook #'merlin-mode)
+;; (load "/root/.opam/4.14.0/share/emacs/site-lisp/tuareg-site-file")
+;; (push "/root/.opam/4.14.0/share/emacs/site-lisp" load-path)
+;; (autoload 'merlin-mode "merlin" "Merlin mode" t)
+;; (add-hook 'tuareg-mode-hook #'merlin-mode)
+;; (add-hook 'caml-mode-hook #'merlin-mode)
 
+(use-package proof-general)
+(use-package company-coq)
+(add-hook 'coq-mode-hook #'company-coq-mode)
 
 
 
