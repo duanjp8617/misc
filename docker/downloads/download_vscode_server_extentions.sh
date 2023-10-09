@@ -6,10 +6,10 @@
 
 # vscode commit version shown by the command: `code --version`:
 # A sample output:
-# 1.82.2
-# abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
+# 1.83.0
+# e7e037083ff4455cf320e344325dacb480062c3c
 # x64
-VSCODE_COMMIT=abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
+VSCODE_COMMIT=e7e037083ff4455cf320e344325dacb480062c3c
 if [ ! -f "./vscode-server-linux-x64.tar.gz" ]; then
   wget -O ./vscode-server-linux-x64.tar.gz https://update.code.visualstudio.com/commit:${VSCODE_COMMIT}/server-linux-x64/stable
 fi
@@ -34,3 +34,6 @@ PYTHON=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-p
 OCAML=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ocamllabs/vsextensions/ocaml-platform/1.13.1/vspackage
 ./download_extention_from_market_place.sh $OCAML ocaml-platform
 
+# coq-lsp
+COQLSP=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ejgallego/vsextensions/coq-lsp/0.1.7/vspackage
+./download_extention_from_market_place.sh $COQLSP coq-lsp
