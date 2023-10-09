@@ -85,7 +85,6 @@ RUN apt-get install -y \
     llvm-14 clang-14 libclang-14-dev clangd-14
 
 # Manual installation of vscode server and extensions
-RUN apt-get install unzip -y
 ENV VSCODE_COMMIT=abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
 COPY downloads/vscode-server-linux-x64.tar.gz /scripts
 COPY downloads/python /scripts

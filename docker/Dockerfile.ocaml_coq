@@ -6,14 +6,20 @@ RUN apt install -y ca-certificates
 COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
 RUN bash /scripts/update_apt_source.sh
 
-COPY scripts/install_emacs.sh /scripts/install_emacs.sh
-RUN bash /scripts/install_emacs.sh
-
 ENV OPAM_BIN=opam-2.1.5-x86_64-linux
 COPY downloads/$OPAM_BIN /scripts
-COPY scripts/install_ocaml_coq.sh /scripts/install_ocaml_coq.sh
+COPY scripts/install_ocaml_coq.sh /scripts
 WORKDIR /scripts
 RUN bash /scripts/install_ocaml_coq.sh
+
+ENV VSCODE_COMMIT=abd2f3db4bdb28f9e95536dfa84d8479f1eb312d
+COPY downloads/vscode-server-linux-x64.tar.gz /scripts
+COPY downloads/ocaml-platform /scripts
+COPY /scripts/install_vscode_server.sh /scripts
+COPY /scripts/install_vscode_extension.sh /scripts
+WORKDIR /scripts
+RUN bash /scripts/install_vscode_server.sh
+RUN bash /scripts/install_vscode_extension.sh ocaml-platform 
 
 COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
 RUN bash /scripts/install_ssh_server.sh
@@ -22,18 +28,6 @@ EXPOSE 22
 ENV TERM=xterm-256color
 
 ENTRYPOINT service ssh restart && bash
-
-RUN apt install -y rsync
-
-COPY scripts/install_fonts.sh /scripts/install_fonts.sh
-COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
-COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
-RUN bash /scripts/install_fonts.sh
-
-COPY downloads/ /downloads/
-WORKDIR /downloads
-RUN ./install_vscode_server.sh
-RUN ./install_vscode_extension.sh ocaml-platform
 
 WORKDIR /root
 
