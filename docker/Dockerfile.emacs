@@ -13,11 +13,11 @@ RUN bash /scripts/update_apt_source.sh
 
 COPY scripts/install_emacs.sh /scripts/install_emacs.sh
 RUN bash /scripts/install_emacs.sh
-RUN apt install -y rsync
 
 COPY scripts/install_fonts.sh /scripts/install_fonts.sh
 COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
 COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
+WORKDIR /scripts
 RUN bash /scripts/install_fonts.sh
 
 COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
