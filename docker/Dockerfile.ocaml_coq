@@ -1,3 +1,35 @@
+# This dockerfile creates a basic development environment for OCaml and Coq
+
+# OCaml:
+# We use the ocaml-platform extention for vscode to develop OCaml. The extention
+# relies on the ocaml-lsp-server to browse the OCaml source code. 
+# By default, it can detect all the project configued with the dune build system. 
+
+## Extention Configuration:
+# Some projects, like CompCert, do not use the dune build system. 
+# Luckly, these projects can still be browsed using the ocaml platform extention, 
+# because the ocaml-lsp-server can still support the old .merlin config file. 
+# To enable the ocaml-lsp-server to read the .merlin config file, we should add the following 
+# content to the vscode configuration:
+# "ocaml.server.args": [
+#     "--fallback-read-dot-merlin"
+# ]
+# In this way, ocaml-lsp-server can recognize the .merlin file of the project and enable
+# source code browsing.
+
+## The "dune-project" file
+# However, according to the following discussions:
+# https://github.com/rescript-lang/rescript-vscode/issues/339
+# https://github.com/ocaml/ocaml-lsp/issues/859
+# To correctly configure ocaml-lsp-server to read the legacy .merlin file, one must put 
+# the project source code in a parent directory that contains an emptry "dune-project"
+# file.
+# The ocaml-project branch of https://github.com/duanjp8617/ocaml-learn demonsrates a 
+# sample project
+
+# Coq:
+# To be written
+
 FROM ubuntu:22.04
 
 RUN apt update
@@ -15,22 +47,22 @@ RUN bash /scripts/install_ocaml_coq.sh
 ENV VSCODE_COMMIT=e7e037083ff4455cf320e344325dacb480062c3c
 COPY downloads/vscode-server-linux-x64.tar.gz /scripts
 COPY downloads/ocaml-platform /scripts
-# COPY downloads/coq-lsp /scripts
+COPY downloads/vscoq /scripts
 COPY /scripts/install_vscode_server.sh /scripts
 COPY /scripts/install_vscode_extension.sh /scripts
 WORKDIR /scripts
 RUN bash /scripts/install_vscode_server.sh
 RUN bash /scripts/install_vscode_extension.sh ocaml-platform 
-# RUN bash /scripts/install_vscode_extension.sh coq-lsp 
+RUN bash /scripts/install_vscode_extension.sh vscoq
 
-COPY scripts/install_emacs.sh /scripts/install_emacs.sh
-RUN bash /scripts/install_emacs.sh
+# COPY scripts/install_emacs.sh /scripts/install_emacs.sh
+# RUN bash /scripts/install_emacs.sh
 
-COPY scripts/install_fonts.sh /scripts/install_fonts.sh
-COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
-COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
-WORKDIR /scripts
-RUN bash /scripts/install_fonts.sh
+# COPY scripts/install_fonts.sh /scripts/install_fonts.sh
+# COPY downloads/FiraCode.tar.xz /scripts/FiraCode.tar.xz
+# COPY downloads/NerdFontsSymbolsOnly.tar.xz /scripts/NerdFontsSymbolsOnly.tar.xz
+# WORKDIR /scripts
+# RUN bash /scripts/install_fonts.sh
 
 COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
 RUN bash /scripts/install_ssh_server.sh

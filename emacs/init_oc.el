@@ -140,6 +140,7 @@ size. This function also handles icons and modeline font sizes."
   :bind (("C-s" . swiper))
   :config
   (ivy-mode 1))
+  
 (use-package ivy-rich
   :init
 	(ivy-rich-mode 1))

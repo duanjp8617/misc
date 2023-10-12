@@ -34,6 +34,6 @@ PYTHON=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-p
 OCAML=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ocamllabs/vsextensions/ocaml-platform/1.13.1/vspackage
 ./download_extention_from_market_place.sh $OCAML ocaml-platform
 
-# coq-lsp
-COQLSP=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ejgallego/vsextensions/coq-lsp/0.1.7/vspackage
-./download_extention_from_market_place.sh $COQLSP coq-lsp
+# vscoq
+VSCOQ=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/maximedenes/vsextensions/vscoq/0.3.9/vspackage
+./download_extention_from_market_place.sh $VSCOQ vscoq
