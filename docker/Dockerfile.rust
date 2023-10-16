@@ -1,0 +1,31 @@
+
+# 1. sudo docker build -f Dockerfile.python -t <tag:version> .
+
+FROM ubuntu:22.04
+
+RUN apt update
+RUN apt install -y ca-certificates 
+
+COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
+RUN bash /scripts/update_apt_source.sh
+
+COPY scripts/install_rust.sh /scripts
+WORKDIR /scripts
+RUN bash /scripts/install_rust.sh
+
+ENV VSCODE_COMMIT=e7e037083ff4455cf320e344325dacb480062c3c
+COPY downloads/vscode-server-linux-x64.tar.gz /scripts
+COPY downloads/rust_analyzer /scripts
+COPY /scripts/install_vscode_server.sh /scripts
+COPY /scripts/install_vscode_extension.sh /scripts
+WORKDIR /scripts
+RUN bash /scripts/install_vscode_server.sh
+RUN bash /scripts/install_vscode_extension.sh rust_analyzer
+
+COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
+RUN bash /scripts/install_ssh_server.sh
+
+EXPOSE 22
+ENV TERM=xterm-256color
+
+ENTRYPOINT service ssh restart && bash

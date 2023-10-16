@@ -37,3 +37,7 @@ OCAML=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ocaml
 # vscoq
 VSCOQ=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/maximedenes/vsextensions/vscoq/0.3.9/vspackage
 ./download_extention_from_market_place.sh $VSCOQ vscoq
+
+# rust-analyzer
+RUST_ANALYZER=https://marketplace.visualstudio.com/_apis/public/gallery/publishers/rust-lang/vsextensions/rust-analyzer/0.4.1695/vspackage?targetPlatform=linux-x64
+./download_extention_from_market_place.sh $RUST_ANALYZER rust_analyzer
