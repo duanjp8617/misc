@@ -29,3 +29,11 @@ EXPOSE 22
 ENV TERM=xterm-256color
 
 ENTRYPOINT service ssh restart && bash
+
+ENV DPDK_VERSION=21.11.5
+ENV DPDK_INSTALL=/root/dpdk-install
+COPY downloads/dpdk-21.11.5.tar.xz /scripts
+COPY scripts/setup_dpdk.sh /scripts
+WORKDIR /scripts
+RUN bash /scripts/setup_dpdk.sh
+
