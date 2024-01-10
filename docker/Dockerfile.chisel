@@ -1,0 +1,31 @@
+FROM ubuntu:22.04
+
+RUN apt update
+RUN apt install -y ca-certificates 
+
+COPY scripts/update_apt_source.sh /scripts/update_apt_source.sh
+RUN bash /scripts/update_apt_source.sh
+
+COPY scripts/install_jdk.sh /scripts/install_jdk.sh
+RUN bash /scripts/install_jdk.sh
+
+COPY downloads/cs-x86_64-pc-linux.gz /scripts/cs-x86_64-pc-linux.gz
+COPY downloads/sbt-1.9.8.tgz /scripts/sbt-1.9.8.tgz
+COPY downloads/firrtl-bin-ubuntu-20.04.tar.gz /scripts/firrtl-bin-ubuntu-20.04.tar.gz
+COPY downloads/v4.226.tar.gz /scripts/v4.226.tar.gz
+COPY scripts/install_sbt.sh /scripts/install_sbt.sh
+WORKDIR /scripts
+RUN bash /scripts/install_sbt.sh
+
+#COPY downloads/cs-x86_64-pc-linux.gz /scripts/cs-x86_64-pc-linux.gz
+# COPY downloads/sbt-1.9.8.tgz /scripts/sbt-1.9.8.tgz
+#COPY scripts/install_coursier.sh /scripts/install_coursier.sh
+#WORKDIR /scripts
+#RUN bash /scripts/install_coursier.sh
+
+#RUN echo 'export COURSIER_REPOSITORIES="ivy2Local|central|https://maven.aliyun.com/repository/public"' >> /root/.bashrc
+
+# COPY downloads/trojan.tar.gz /scripts/trojan.tar.gz
+# RUN apt install -y xz-utils
+# RUN tar -xvf ./trojan.tar.gz
+

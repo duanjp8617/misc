@@ -1,0 +1,1 @@
+wget -O ./trojan.tar.gz https://github.com/trojan-gfw/trojan/releases/download/v1.16.0/trojan-1.16.0-linux-amd64.tar.xz
