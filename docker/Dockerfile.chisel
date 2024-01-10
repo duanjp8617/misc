@@ -13,19 +13,39 @@ COPY downloads/cs-x86_64-pc-linux.gz /scripts/cs-x86_64-pc-linux.gz
 COPY downloads/sbt-1.9.8.tgz /scripts/sbt-1.9.8.tgz
 COPY downloads/firrtl-bin-ubuntu-20.04.tar.gz /scripts/firrtl-bin-ubuntu-20.04.tar.gz
 COPY downloads/v4.226.tar.gz /scripts/v4.226.tar.gz
-COPY scripts/install_sbt.sh /scripts/install_sbt.sh
+COPY scripts/install_chisel.sh /scripts/install_chisel.sh
 WORKDIR /scripts
-RUN bash /scripts/install_sbt.sh
+RUN bash /scripts/install_chisel.sh
 
-#COPY downloads/cs-x86_64-pc-linux.gz /scripts/cs-x86_64-pc-linux.gz
-# COPY downloads/sbt-1.9.8.tgz /scripts/sbt-1.9.8.tgz
-#COPY scripts/install_coursier.sh /scripts/install_coursier.sh
-#WORKDIR /scripts
-#RUN bash /scripts/install_coursier.sh
+COPY scripts/install_ssh_server.sh /scripts/install_ssh_server.sh
+RUN bash /scripts/install_ssh_server.sh
 
-#RUN echo 'export COURSIER_REPOSITORIES="ivy2Local|central|https://maven.aliyun.com/repository/public"' >> /root/.bashrc
+EXPOSE 22
+ENV TERM=xterm-256color
+ENTRYPOINT service ssh restart && bash
 
-# COPY downloads/trojan.tar.gz /scripts/trojan.tar.gz
-# RUN apt install -y xz-utils
-# RUN tar -xvf ./trojan.tar.gz
+ENV VSCODE_COMMIT=e7e037083ff4455cf320e344325dacb480062c3c
+COPY downloads/vscode-server-linux-x64.tar.gz /scripts
+COPY /scripts/install_vscode_server.sh /scripts
+RUN bash /scripts/install_vscode_server.sh
 
+WORKDIR /root
+
+# This file creates a container for chisel development.
+# Sources include: 
+# 1. https://blog.csdn.net/weixin_43681766/article/details/124910441
+# 2. https://github.com/chipsalliance/chisel/blob/v5.1.0/SETUP.md
+
+# Create this container with the following command:
+# docker run --name <container_name> -it -d -p 25:22 <image_name>
+
+# Use remote ssh in vscode to login this container and install two extentions:
+# Scala Syntax and Metals
+
+# Open the extention settings, add the following repo address to the metals.customRepositories: 
+# https://maven.aliyun.com/repository/central
+# The maven aliyun repo is extremely fast, it should get most of the downloads down without 
+# halting.
+
+# Then add a scala/chisel project folder to the vscode. When loading the project for the first time,
+# the metals extention will download the metals language server, and configure everything else.
