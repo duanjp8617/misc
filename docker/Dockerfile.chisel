@@ -49,3 +49,9 @@ WORKDIR /root
 
 # Then add a scala/chisel project folder to the vscode. When loading the project for the first time,
 # the metals extention will download the metals language server, and configure everything else.
+
+# Simulation with Verilator
+# 1. Since verilator compiles .v files to cpp models, we'll need a basic cpp ide to 
+# facilitate our debugging. It is suffice to use ms c++ extention
+# 2. Some configurations that are necessart to make ms c++ extention work correctly:
+# * 
