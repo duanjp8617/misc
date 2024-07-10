@@ -1,0 +1,19 @@
+FROM ubuntu:22.04
+
+RUN apt update
+RUN apt install -y ca-certificates 
+
+RUN apt update
+# COPY ./update_apt_source.sh /scripts/update_apt_source.sh
+# RUN bash /scripts/update_apt_source.sh
+# RUN apt update
+
+# install necessary build tools and dependencies
+RUN apt install -y cmake make gcc g++ pkg-config libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev libgtest-dev libzmq3-dev
+
+# it seems that srsran does not require a lot of dependencies
+
+# clone the srsran repo
+# git clone --depth 1 --branch release_24_04 https://github.com/srsran/srsRAN_Project.git
+
+
