@@ -30,7 +30,7 @@ source ~/.proxy
 wget www.google.com
 ```
 
-# 五、问题处理
+# 五、问题处理(有时没用)
 上述流程可能出现问题，具体而言，wsl2.2版本以后，会启用dns tunneling，导致流量无法正确到达运行在主机内的clash for windows，解决方法如下：
 
 1. WSL 2.2.1 版本默认启用了 DNS 隧道, 会导致该方法失效。如果你正在使用该版本可以参照官方文档配置，在 C:\Users\<UserName>\.wslconfig 文件中 (如果不存在就手动创建一个) 加入以下内容以关闭 DNS 隧道:
@@ -39,4 +39,6 @@ wget www.google.com
 dnsTunneling=false
 ```
 
+# 六、问题处理更新
+问题处理五有时无效。最简单的方法为点击General -> Allow LAN旁边的局域网图标，会显示出WSL vEthernet的IP地址。将```三、配置WSL2```中的hostip替换为该IP地址即可。
 2. 你可以执行 wsl -v 查看你的 WSL 版本。
