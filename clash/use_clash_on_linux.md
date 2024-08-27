@@ -64,3 +64,7 @@ curl --request PUT --url "http://127.0.0.1:9090/proxies/%F0%9F%9A%80%20%E8%8A%82
 利用命令重新查询当前所选择的节点：
 ![p7](./p7.png)  
 
+利用如下命令查看当前连接：  
+```shell
+curl --request GET --url http://127.0.0.1:9090/logs
+```
