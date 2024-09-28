@@ -5,7 +5,7 @@ The toolchain of OCaml is very similar to Rust. Making a local installation is v
 
 1. Use the following command to install opam:  
 ```shell
-`bash -c "sh <(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"`
+bash -c "sh <(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"
 ```
 
 2. Init opan with:  
