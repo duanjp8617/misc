@@ -24,9 +24,10 @@ opam install dune merlin ocaml-lsp-server odoc ocamlformat utop dune-release men
 ```
 
 ## Install Coq
-Since we will use compcert, so we install Coq 8.19 with the following command:  
+Since we will use compcert, so we install Coq 8.19 and the language server with the following command:  
 ```shell
 opam pin add coq 8.19.0
+opam install vscoq-language-server
 ```
 
 ## Compile compcert
