@@ -1,0 +1,19 @@
+# Use the official Python image as a base
+FROM python:3.9-slim    
+
+# Set the working directory
+WORKDIR /app
+
+# Install PyTorch 2.5.0 CPU version from TUNA mirror
+RUN pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision torchaudio
+
+# Copy your application code (if any) to the container
+# COPY . .
+
+# Command to run your application (if applicable)
+# CMD ["python", "your_script.py"]
+
+# Expose any ports if necessary
+# EXPOSE 5000
+
+# You can customize this Dockerfile further as needed
