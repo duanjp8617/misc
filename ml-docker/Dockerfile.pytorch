@@ -33,5 +33,13 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision torchaudio
 
+WORKDIR /workspace
+
+COPY ./cifar-10-python.tar.gz /workspace
+COPY ./distributed_training_resnet50.py /workspace
+
+RUN tar -xvf ./cifar-10-python.tar.gz
+RUN mv cifar-10-batches-py data
+
 # Set the default command
 CMD ["bash"]
