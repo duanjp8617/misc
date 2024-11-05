@@ -1,19 +1,37 @@
-# Use the official Python image as a base
-FROM python:3.9-slim    
+# A base ubuntu22.04 image that is usable.
 
-# Set the working directory
-WORKDIR /app
+# Use the official Ubuntu base image
+FROM ubuntu:22.04
 
-# Install PyTorch 2.5.0 CPU version from TUNA mirror
-RUN pip install --index-url https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision torchaudio
+# Set the maintainer label
+LABEL maintainer="djp"
 
-# Copy your application code (if any) to the container
-# COPY . .
+# To enable proxy, make the following environment variables available when running docker build
+# export HTTPS_PROXY="http://${hostip}:7890"
+# export HTTP_PROXY="http://${hostip}:7890"
 
-# Command to run your application (if applicable)
-# CMD ["python", "your_script.py"]
+RUN apt update && apt install -y ca-certificates 
 
-# Expose any ports if necessary
-# EXPOSE 5000
+RUN cp -a /etc/apt/sources.list /etc/apt/sources.list.bak
+RUN sed -i "s@http://.*archive.ubuntu.com@https://mirrors.sustech.edu.cn@g" /etc/apt/sources.list
+RUN sed -i "s@http://.*security.ubuntu.com@https://mirrors.sustech.edu.cn@g" /etc/apt/sources.list
 
-# You can customize this Dockerfile further as needed
+# Update package list and install basic utilities including iproute2
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    vim \
+    git \
+    htop \
+    unzip \
+    iproute2 \
+    && apt-get clean 
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip
+
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch torchvision torchaudio
+
+# Set the default command
+CMD ["bash"]
