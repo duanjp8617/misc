@@ -114,6 +114,7 @@ def evaluate(model, test_loader, criterion):
 
 # Train and evaluate the model
 epochs = 5
+print(f"Train resnet50 using CIFAR10 dataset for {epochs} epochs.")
 train(model, train_loader, criterion, optimizer, epochs)
 evaluate(model, test_loader, criterion)
 

@@ -37,6 +37,7 @@ WORKDIR /workspace
 
 COPY ./cifar-10-python.tar.gz /workspace
 COPY ./distributed_training_resnet50.py /workspace
+COPY ./single_server_resnet50.py /workspace
 
 RUN tar -xvf ./cifar-10-python.tar.gz
 RUN mv cifar-10-batches-py data
