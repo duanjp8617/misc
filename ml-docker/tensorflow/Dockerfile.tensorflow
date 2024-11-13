@@ -1,0 +1,32 @@
+# A base ubuntu22.04 image that is usable.
+
+# Use the official Ubuntu base image
+FROM ubuntu:22.04
+
+# Set the maintainer label
+LABEL maintainer="djp"
+
+# To enable proxy, make the following environment variables available when running docker build
+# export HTTPS_PROXY="http://${hostip}:7890"
+# export HTTP_PROXY="http://${hostip}:7890"
+
+RUN apt update && apt install -y ca-certificates 
+
+RUN cp -a /etc/apt/sources.list /etc/apt/sources.list.bak
+RUN sed -i "s@http://.*archive.ubuntu.com@https://mirrors.sustech.edu.cn@g" /etc/apt/sources.list
+RUN sed -i "s@http://.*security.ubuntu.com@https://mirrors.sustech.edu.cn@g" /etc/apt/sources.list
+
+# Update package list and install basic utilities including iproute2
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    vim \
+    git \
+    htop \
+    unzip \
+    iproute2 \
+    && apt-get clean 
+
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip
