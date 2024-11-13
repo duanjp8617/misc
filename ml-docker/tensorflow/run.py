@@ -47,14 +47,14 @@ with tf.compat.v1.Session(graph=graph) as sess:
     image_file_prefix = "./data/ILSVRC2012_val_"
     image_file_suffix = ".JPEG"
 
-    print("Running for 10s:")
+    print("Scaning 100 images:")
     start_measure = time.perf_counter()
     processed_images = 0
 
     # Run for 10 seconds
-    while time.time() - start_time < 10:
+    for i in range(1,101):
         # We have a total of 500 images, we randomly select an image
-        image_id = str(random.randint(1, 500))
+        image_id = str(i)
         image_path = image_file_prefix+('0'*(8-len(image_id)))+image_id+image_file_suffix
     
         # Preprocess image
@@ -72,5 +72,7 @@ with tf.compat.v1.Session(graph=graph) as sess:
 
     print(f"Elapsed time: {elapsed_time_s:.4f}s")
     print(f"Total processed images: {processed_images}")
-    print(f"Inference throughput: {throughput} images/s")
+    print(f"Inference throughput: {throughput:.4f} images/s")
+    latency = elapsed_time_s/processed_images*1000
+    print(f"Inference latency: {latency:.4f} ms")
 
