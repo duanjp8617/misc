@@ -1,4 +1,7 @@
+# See this benchmark: https://docs.amd.com/v/u/vipMmQHAUtFV8hlKFlWnkQ
+
 # A base ubuntu22.04 image that is usable.
+
 
 # Use the official Ubuntu base image
 FROM ubuntu:22.04
@@ -30,3 +33,15 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip
+
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple tensorflow
+
+WORKDIR /workspace
+
+COPY ./inception_v1_inference.zip /workspace
+RUN unzip ./inception_v1_inference.zip
+
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple Pillow matplotlib
+
+COPY ./run.py /workspace
+COPY ./run_fast.py /workspace
