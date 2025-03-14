@@ -198,7 +198,6 @@ void runInception(vart::Runner* runner_ori, const string imagePath) {
   int offsetWidth = (resizeWidth - inWidth) / 2;
 
   int batchSize = in_dims[0];
-  std::cout<<"Batchsize is: "<<batchSize<<std::endl;
 
   std::vector<std::unique_ptr<vart::TensorBuffer>> inputs, outputs;
 
@@ -219,6 +218,11 @@ void runInception(vart::Runner* runner_ori, const string imagePath) {
   void* std_data_in = (void*) inputsPtr[0]->data().first;
   void* std_data_out = (void*) outputsPtr[0]->data().first;
 
+  for(int i=0; i<images.size(); i++) {
+    Mat image = imread(baseImagePath + images[i]);
+    imageList.push_back(image);
+  }
+
   /*run with batch*/
   auto start_time = std::chrono::high_resolution_clock::now();
   for (unsigned int n = 0; n < images.size(); n += batchSize) {
@@ -227,7 +231,7 @@ void runInception(vart::Runner* runner_ori, const string imagePath) {
     in_dims[0] = runSize;
     out_dims[0] = batchSize;
     for (unsigned int i = 0; i < runSize; i++) {
-      Mat image = imread(baseImagePath + images[n + i]);
+      Mat& image = imageList[n+i];
 
       /*image pre-process*/
       Mat image2 = cv::Mat(inHeight, inWidth, CV_8SC3);
