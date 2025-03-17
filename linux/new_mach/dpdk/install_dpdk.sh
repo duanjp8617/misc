@@ -17,7 +17,7 @@ fi
 # Update package lists and install dependencies
 echo "Updating package lists and installing dependencies..."
 sudo apt update -y
-sudo apt install -y build-essential meson ninja-build python3-pyelftools libnuma-dev
+sudo apt install -y build-essential meson ninja-build python3-pyelftools libnuma-dev pkg-config
 
 # Check if the DPDK tar file already exists in the current directory
 if [[ ! -f "$WORK_DIR/$DPDK_TAR" ]]; then
@@ -54,6 +54,8 @@ echo "Disable environment setting."
 #echo "export LD_LIBRARY_PATH=\$DPDK_DIR/lib:\$LD_LIBRARY_PATH" >> ~/.bashrc
 #source ~/.bashrc
 
-echo "DPDK version $DPDK_VERSION installed successfully in $WORK_DIR/$DPDK_SRC_DIR/install."
+echo " "
+echo "DPDK version $DPDK_VERSION installed successfully in: $WORK_DIR/$DPDK_SRC_DIR/install"
+echo " "
 echo "Execute the following command to search for the installation information."
 echo "export PKG_CONFIG_PATH=$WORK_DIR/$DPDK_SRC_DIR/install/lib/x86_64-linux-gnu/pkgconfig:\$PKG_CONFIG_PATH"
