@@ -40,7 +40,7 @@ fi
 # Build and install DPDK in the current directory
 cd "$DPDK_SRC_DIR"
 echo "Building and installing DPDK in $WORK_DIR/$DPDK_SRC_DIR/install..."
-meson setup build --prefix="$WORK_DIR/$DPDK_SRC_DIR/install"
+meson setup build --prefix="$WORK_DIR/$DPDK_SRC_DIR/install" --buildtype=release
 ninja -C build
 # If $WORK_DIR requires root access, prefix the following command with sudo
 ninja -C build install
