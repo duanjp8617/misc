@@ -1,3 +1,6 @@
+# Remove -DPERF=on enables kTesting
+# -DLOG_LEVEL=none/error/warn/info/reorder/trace/cc to enable differnt printing
+
 WORK_DIR="$(pwd)"   # Use the current working directory
 HOSTS=("h139" "h107")
 DPDK_INSTALLED_PATH="PKG_CONFIG_PATH=~/ws_erpc/dpdk-21.11.9/install/lib/x86_64-linux-gnu/pkgconfig"
